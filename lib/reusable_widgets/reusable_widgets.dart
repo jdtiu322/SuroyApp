@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food/screens/signin_screen.dart';
+import 'package:suroyapp/screens/signin_screen.dart';
 
 Image logoWidget(String imageName) {
   return Image.asset(imageName, fit: BoxFit.fitWidth, width: 600);
@@ -59,7 +59,6 @@ Widget resizableTextField(
   );
 }
 
-
 //reusable button for signin and login
 Container signInSignUpButton(
     BuildContext context, bool isLogin, Function onTap) {
@@ -70,14 +69,7 @@ Container signInSignUpButton(
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
     child: ElevatedButton(
         onPressed: () {
-         if (!isLogin) {
-          // Navigate to the login page
-          Navigator.push(context, MaterialPageRoute(builder: (context) => SignInScreen()));
-        } else {
-          // Handle sign-up logic here
-          // You can add code to handle sign-up functionality
-          // For example, display a sign-up form or perform sign-up actions
-        }
+          onTap();
         },
         child: Text(
           isLogin ? 'LOG IN' : 'SIGN UP',

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food/reusable_widgets/reusable_widgets.dart';
-import 'package:food/screens/signup_screen.dart';
-import 'package:food/utils/color_utils.dart';
+import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
+import 'package:suroyapp/screens/home_screen.dart';
+import 'package:suroyapp/screens/signup_screen.dart';
+import 'package:suroyapp/utils/color_utils.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -26,7 +27,8 @@ class _SignInScreenState extends State<SignInScreen> {
       ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
       child: SingleChildScrollView(
           child: Padding(
-        padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0, 20, 0),
+        padding: EdgeInsets.fromLTRB(
+            20, MediaQuery.of(context).size.height * 0, 20, 0),
         child: Column(children: <Widget>[
           const SizedBox(height: 130),
           logoWidget("assets/images/logo1.png"),
@@ -58,16 +60,16 @@ class _SignInScreenState extends State<SignInScreen> {
           reusableTextField("Enter password", Icons.lock_outline, true,
               passwordTextController),
           const SizedBox(height: 50),
-          signInSignUpButton(context, true, () {}),
+          signInSignUpButton(context, true, () {
+             Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()));
+          }),
           signUpOption()
-        ]
-        ),
-      )
-      ),
-    )
-    );
+        ]),
+      )),
+    ));
   }
- 
+
   Row signUpOption() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -76,12 +78,15 @@ class _SignInScreenState extends State<SignInScreen> {
             style: TextStyle(color: Colors.white70)),
         GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const SignUpScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SignUpScreen()));
             },
             child: const Text(" Sign Up",
                 style: TextStyle(
-                    color: Colors.white70, fontWeight: FontWeight.bold, 
+                    color: Colors.white70,
+                    fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
                     decorationColor: Colors.white70)))
       ],

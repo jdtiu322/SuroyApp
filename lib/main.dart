@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food/screens/signin_screen.dart';
+import 'package:suroyapp/screens/signin_screen.dart';
 
 void main() {
   runApp(const MyApp());
