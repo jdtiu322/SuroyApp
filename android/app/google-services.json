@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "596974874841",
+    "project_id": "suroy-4c400",
+    "storage_bucket": "suroy-4c400.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596974874841:android:221ee8b9ec45a3c5d28ec8",
+        "android_client_info": {
+          "package_name": "com.example.suroyapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAti6yCKxiqBDHPb-EXyf4v_ImkLAGnlXE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
