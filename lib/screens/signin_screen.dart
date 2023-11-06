@@ -67,7 +67,7 @@ class _SignInScreenState extends State<SignInScreen> {
     )
     );
   }
-
+ 
   Row signUpOption() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -79,9 +79,11 @@ class _SignInScreenState extends State<SignInScreen> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const SignUpScreen()));
             },
-            child: const Text("Sign Up",
+            child: const Text(" Sign Up",
                 style: TextStyle(
-                    color: Colors.white70, fontWeight: FontWeight.bold)))
+                    color: Colors.white70, fontWeight: FontWeight.bold, 
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.white70)))
       ],
     );
   }
