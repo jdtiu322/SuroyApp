@@ -32,6 +32,7 @@ TextField reusableTextField(String text, IconData icon, bool isPasswordType,
           : TextInputType.emailAddress);
 }
 
+
 Widget resizableTextField(
   String data,
   IconData icon,
