@@ -14,6 +14,13 @@ class SignUpScreen extends StatefulWidget {
 class SignUpScreenState extends State<SignUpScreen> {
   TextEditingController passwordTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
+  TextEditingController firstNameTextController = TextEditingController();
+  TextEditingController middleNameTextController = TextEditingController();
+  TextEditingController lastNameTextController = TextEditingController();
+  TextEditingController ageTextController = TextEditingController();
+  TextEditingController phoneNumberTextController = TextEditingController();
+  TextEditingController driverLicenseTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +79,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                   false, emailTextController),
               SizedBox(height: 20),
               signInSignUpButton(context, false, () {
+                // FirebaseAuth.instance.createUserWithEmailAndPassword(email)
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => HomeScreen()));
               }),
