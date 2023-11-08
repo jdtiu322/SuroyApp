@@ -1,13 +1,33 @@
 {
   "project_info": {
-    "project_number": "596974874841",
-    "project_id": "suroy-4c400",
-    "storage_bucket": "suroy-4c400.appspot.com"
+    "project_number": "974649147117",
+    "firebase_url": "https://suroyapp-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "suroyapp",
+    "storage_bucket": "suroyapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:596974874841:android:221ee8b9ec45a3c5d28ec8",
+        "mobilesdk_app_id": "1:974649147117:android:138021a5748bd3597f16e4",
+        "android_client_info": {
+          "package_name": "com.example.suroy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBMDbek5Pp7dxS_vpNyEAQNVz3at4pN2M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974649147117:android:e22c5eecf044ef207f16e4",
         "android_client_info": {
           "package_name": "com.example.suroyapp"
         }
@@ -15,7 +35,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAti6yCKxiqBDHPb-EXyf4v_ImkLAGnlXE"
+          "current_key": "AIzaSyCBMDbek5Pp7dxS_vpNyEAQNVz3at4pN2M"
         }
       ],
       "services": {
