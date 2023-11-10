@@ -37,10 +37,11 @@ Widget resizableTextField(
   String data,
   IconData icon,
   double width, // Pass the desired width as a parameter
-) {
+TextEditingController controller) {
   return SizedBox(
     width: width,
     child: TextField(
+      controller : controller,
       cursorColor: Colors.blue,
       style: TextStyle(color: Colors.black45.withOpacity(0.7)),
       decoration: InputDecoration(
