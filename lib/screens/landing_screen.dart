@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/screens/signin_screen.dart';
-import 'package:suroyapp/utils/color_utils.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -18,7 +17,7 @@ class _LandingPageState extends State<LandingPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(color: Colors.white),
         child: SingleChildScrollView(
             child: Padding(
           padding: EdgeInsets.fromLTRB(
@@ -26,7 +25,7 @@ class _LandingPageState extends State<LandingPage> {
           child: Column(children: <Widget>[
             const SizedBox(height: 130),
             logoWidget('assets/images/landingpage.png'),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Align(
               child: Text("Rent",
                   style: GoogleFonts.poppins(
@@ -40,24 +39,24 @@ class _LandingPageState extends State<LandingPage> {
                 style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w600,
                     fontSize: 32)),
-           Text("for any occasion",
+           const Text("for any occasion",
                 style: TextStyle(
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w600,
                     fontSize: 32)),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
            Text(
               "It's never been easier",
               style: GoogleFonts.poppins(
                 fontSize: 14,
-                color: Color.fromARGB(255, 133, 132, 132),
+                color: const Color.fromARGB(255, 133, 132, 132),
               ),
             ),
              Text(
               "to rent a car using an app.",
               style: GoogleFonts.poppins(
                 fontSize: 14,
-                color: Color.fromARGB(255, 133, 132, 132),
+                color: const Color.fromARGB(255, 133, 132, 132),
               ),
             ),
              Text(
@@ -65,13 +64,13 @@ class _LandingPageState extends State<LandingPage> {
               style: 
                 GoogleFonts.poppins(
                 fontSize: 14,
-                color: Color.fromARGB(255, 133, 132, 132),
+                color: const Color.fromARGB(255, 133, 132, 132),
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SignInScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const SignInScreen()));
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith((states) {
@@ -83,7 +82,7 @@ class _LandingPageState extends State<LandingPage> {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18))),
-                minimumSize: MaterialStateProperty.all(Size(230, 50))
+                minimumSize: MaterialStateProperty.all(const Size(230, 50))
               ),
               child: Text("Let's go",
                   style: GoogleFonts.poppins(

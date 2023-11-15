@@ -30,7 +30,7 @@ class SignUpScreenState extends State<SignUpScreen> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white
         ),
         child: SingleChildScrollView(
@@ -38,8 +38,8 @@ class SignUpScreenState extends State<SignUpScreen> {
             padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0, 20, 0),
             child: Column(
               children: <Widget>[
-                SizedBox(height: 30),
-                Text(
+                const SizedBox(height: 30),
+                const Text(
                   "Create an account",
                   style: TextStyle(
                     fontFamily: 'Poppins',
@@ -48,23 +48,23 @@ class SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 signInOption(),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 reusableTextField("Email", Icons.mail, false, emailTextController),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 reusableTextField("Password", Icons.lock_outline, true, passwordTextController),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 reusableTextField("First Name", Icons.person_outline, false, firstNameTextController),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 reusableTextField("Middle Name", Icons.person_outline, false, middleNameTextController),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 reusableTextField("Last Name", Icons.person_outline, false, lastNameTextController),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   children: [
                     Expanded(
                       child: resizableTextField("Phone Number", Icons.phone_android_outlined, 180, phoneNumberTextController),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ), // Add some spacing between the two fields
                     Expanded(
@@ -72,9 +72,9 @@ class SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 reusableTextField("Driver's License", Icons.numbers_outlined, false, driverLicenseTextController),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 signInSignUpButton(context, false, () async {
                   try {
                     UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -98,7 +98,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                       });
 
                       print("New account created");
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => StartingPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const StartingPage()));
                     }
                   } catch (error) {
                     print("Invalid account details ${error.toString()}");
@@ -116,7 +116,7 @@ class SignUpScreenState extends State<SignUpScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Have an account already? Click here to", style: TextStyle(color:Color(0xfFF004AAD),)),
+        const Text("Have an account already? Click here to", style: TextStyle(color:Color(0xfff004aad),)),
         GestureDetector(
           onTap: () {
             Navigator.push(
@@ -129,7 +129,7 @@ class SignUpScreenState extends State<SignUpScreen> {
           child: const Text(
             " log-in",
             style: TextStyle(
-              color: Color(0xfFF004AAD),
+              color: Color(0xfff004aad),
               fontWeight: FontWeight.w500,
               decoration: TextDecoration.underline,
               decorationColor: Colors.grey,

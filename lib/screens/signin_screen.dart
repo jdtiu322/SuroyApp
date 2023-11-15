@@ -33,7 +33,7 @@ class _SignInScreenState extends State<SignInScreen> {
         //     begin: Alignment.topCenter,
         //     end: Alignment.bottomCenter,
         //   ),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white),
         child: SingleChildScrollView(
           child: Padding(
@@ -49,7 +49,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 logoWidget("assets/images/logo1.png"),
                 const SizedBox(height: 30),
                    Align(  
-                  alignment: Alignment(0, -0.1),
+                  alignment: const Alignment(0, -0.1),
                   child: Text(
                     "Welcome!",
                     style: GoogleFonts.poppins(
@@ -63,7 +63,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     fontWeight: FontWeight.normal,
-                    color: Color.fromARGB(179, 4, 23, 194),                 
+                    color: const Color.fromARGB(179, 4, 23, 194),                 
                     decoration: TextDecoration.underline,
                     decorationColor: Colors.white70,
                   ),
@@ -93,7 +93,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => StartingPage(),
+                        builder: (context) => const StartingPage(),
                       ),
                     );
                   }).catchError((error, stackTrace) {
@@ -115,19 +115,19 @@ class _SignInScreenState extends State<SignInScreen> {
       children: [
         Text("Don't have account?",
             style:GoogleFonts.poppins(
-              color: Color(0xfFF004AAD),)),
+              color: const Color(0xfff004aad),)),
         GestureDetector(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SignUpScreen()));
+                  MaterialPageRoute(builder: (context) => const SignUpScreen()));
             },
             child: Text(" Sign Up",
                 style: 
                     GoogleFonts.poppins(
-                    color: Color(0xfFF004AAD),
+                    color: const Color(0xfff004aad),
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
-                    decorationColor: Color(0xfFF004AAD),))),
+                    decorationColor: const Color(0xfff004aad),))),
       ],
     );
   }

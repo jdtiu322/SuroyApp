@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:suroyapp/reusable_widgets/bottom_navigation.dart';
 import 'package:suroyapp/screens/bookings_screen.dart';
 import 'package:suroyapp/screens/home_screen.dart';
 import 'package:suroyapp/screens/message_screen.dart';
@@ -8,7 +7,7 @@ import 'package:suroyapp/screens/profile_screen.dart';
 import 'package:suroyapp/screens/wishlist_screen.dart';
 
 class StartingPage extends StatefulWidget {
-  const StartingPage({Key? key}) : super(key: key);
+  const StartingPage({super.key});
 
   @override
   State<StartingPage> createState() => _StartingPageState();
@@ -24,11 +23,11 @@ class _StartingPageState extends State<StartingPage> {
   }
 
   final List pages = [
-    HomeScreen(),
-    WishlistScreen(),
-    BookingsScreen(),
-    MessageScreen(),
-    ProfileScreen(),
+    const HomeScreen(),
+    const WishlistScreen(),
+    const BookingsScreen(),
+    const MessageScreen(),
+    const ProfileScreen(),
   ];
 
   @override

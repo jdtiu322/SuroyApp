@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
+import 'package:suroyapp/screens/user_image.dart';
 import 'package:suroyapp/utils/color_utils.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -34,7 +35,7 @@ class _ApplicationState extends State<Application> {
 
   String? selectedVehicle = "";
 
-  String vImageURL = '';
+  String imageUrl= '';
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class _ApplicationState extends State<Application> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
         ),
         child: SingleChildScrollView(
@@ -51,7 +52,7 @@ class _ApplicationState extends State<Application> {
                 20, MediaQuery.of(context).size.height * 0, 20, 0),
             child: Column(
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 Text(
@@ -59,7 +60,7 @@ class _ApplicationState extends State<Application> {
                   style: GoogleFonts.poppins(
                       fontSize: 32, fontWeight: FontWeight.w600),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 Align(
@@ -68,8 +69,8 @@ class _ApplicationState extends State<Application> {
                     value: selectedVehicle,
                     items: vehicleList.map((e) {
                       return DropdownMenuItem(
-                        child: Text(e),
                         value: e,
+                        child: Text(e),
                       );
                     }).toList(),
                     onChanged: (val) {
@@ -79,11 +80,11 @@ class _ApplicationState extends State<Application> {
                     },
                     icon: const Icon(
                       Icons.arrow_drop_down,
-                      color: Color(0xfFF004AAD),
+                      color: Color(0xfff004aad),
                     ),
                     decoration: InputDecoration(
                       labelText: "Vehicle Type",
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Icons.car_rental,
                         color: Colors.black,
                       ),
@@ -92,60 +93,34 @@ class _ApplicationState extends State<Application> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 reusableTextField("Vehicle model", Icons.car_repair_sharp,
                     false, vehicleModel),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 reusableTextField(
                     "Model Year", Icons.calendar_month, false, modelYear),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 reusableTextField("License Plate No.", Icons.numbers_rounded,
                     false, plateNumber),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
+                UserImage(onFileChanged: ((imageUrl) {
+                  setState(() {
+                    this.imageUrl = imageUrl;
+                  });
+                })),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       children: [
-                        IconButton(
-                            onPressed: () async {
-                              ImagePicker imagePicker = ImagePicker();
-                              XFile? file = await imagePicker.pickImage(
-                                  source: ImageSource.camera);
-                              print('${file?.path}');
-
-                              if (file == null) return;
-
-                              String vImageFileName = DateTime.now()
-                                  .millisecondsSinceEpoch
-                                  .toString()+".png";
-
-                              Reference referenceRoot =
-                                  FirebaseStorage.instance.ref();
-                              Reference referenceImageDir =
-                                  referenceRoot.child('vehicleImages');
-                              Reference referenceImageToUpload =
-                                  referenceImageDir.child(vImageFileName);
-
-                              try {
-                                await referenceImageToUpload
-                                    .putFile(File(file!.path));
-                                vImageURL =  await referenceImageToUpload.getDownloadURL();
-                              } catch (error) {
-
-                              }
-                            },
-                            icon: SvgPicture.asset(
-                                'assets/vectors/add-image.svg'),
-                            iconSize: 120),
                         Text(
                           "Add Vehicle Image",
                           style: GoogleFonts.poppins(

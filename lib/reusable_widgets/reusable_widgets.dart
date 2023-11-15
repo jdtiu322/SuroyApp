@@ -1,12 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:suroyapp/screens/application_screen.dart';
-import 'package:suroyapp/screens/home_screen.dart';
-import 'package:suroyapp/screens/notification_screen.dart';
-import 'package:suroyapp/screens/profile_details.dart';
 
 Image logoWidget(String imageName) {
   return Image.asset(imageName, fit: BoxFit.fitWidth, width: 600);
@@ -65,7 +58,7 @@ TextEditingController controller) {
           borderRadius: BorderRadius.circular(30.0),
           borderSide: const BorderSide(width: 1, style: BorderStyle.solid),
         ),
-        contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+        contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
       ),
     ),
   );
@@ -83,14 +76,6 @@ Container signInSignUpButton(
         onPressed: () {
           onTap();
         },
-        child: Text(
-          isLogin ? 'LOG IN' : 'SIGN UP',
-          style: 
-              GoogleFonts.poppins(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
-        ),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.pressed)) {
@@ -100,6 +85,14 @@ Container signInSignUpButton(
           }),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+        ),
+        child: Text(
+          isLogin ? 'LOG IN' : 'SIGN UP',
+          style: 
+              GoogleFonts.poppins(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16),
         )),
   );
 }

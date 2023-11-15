@@ -53,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(color: Colors.white),
         child: SingleChildScrollView(
           child: Padding(
               padding: EdgeInsets.fromLTRB(
@@ -63,11 +63,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                    GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ProfileDetails()));
+            context, MaterialPageRoute(builder: (context) => const ProfileDetails()));
       },
       child: Container(
           height: 80,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.grey)),
               color: Colors.white),
           child: Padding(
@@ -79,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: 60,
                   height: 60,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 Expanded(
@@ -112,7 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           )),
     ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   GestureDetector(
@@ -120,7 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Application()));
+                              builder: (context) => const Application()));
                     },
                     child: Material(
                       elevation: 4.0,
@@ -136,12 +136,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: Colors.black.withOpacity(0.5),
                                 spreadRadius: 2,
                                 blurRadius: 5,
-                                offset: Offset(0, 3),
+                                offset: const Offset(0, 3),
                               )
                             ]),
                         child: Row(children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 15, top: 15),
+                            padding: const EdgeInsets.only(left: 15, top: 15),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -150,11 +150,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   "SUROY YOUR VEHICLE",
                                   style: GoogleFonts.oswald(
                                     fontSize: 20,
-                                    color: Color(0xfFF004AAD),
+                                    color: const Color(0xfff004aad),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Text(
@@ -162,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   style: GoogleFonts.quicksand(
                                       fontWeight: FontWeight.w500),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Text(
@@ -173,11 +173,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 15,
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.only(left: 10),
                             child: Image.asset('assets/images/landingpage.png',
                                 width: 150, height: 150),
                           )
@@ -194,7 +194,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   AppBar appBar(BuildContext context) {
     return AppBar(
-      title: Text(
+      title: const Text(
         "Profile",
         style: TextStyle(
           fontWeight: FontWeight.bold,
@@ -202,16 +202,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           color: Colors.black,
         ),
       ),
-      backgroundColor: Color(0xfFF004AAD).withOpacity(0.1),
+      backgroundColor: const Color(0xfff004aad).withOpacity(0.1),
       elevation: 0.0,
       centerTitle: true,
       leading: GestureDetector(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+              context, MaterialPageRoute(builder: (context) => const HomeScreen()));
         },
         child: Container(
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
           alignment: Alignment.center,
           child: SvgPicture.asset(
@@ -225,12 +225,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         GestureDetector(
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => NotificationScreen()));
+                MaterialPageRoute(builder: (context) => const NotificationScreen()));
           },
           child: Padding(
-            padding: EdgeInsets.only(right: 10.0),
+            padding: const EdgeInsets.only(right: 10.0),
             child: Container(
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(10)),
               child: SvgPicture.asset('assets/vectors/notifications.svg'),
