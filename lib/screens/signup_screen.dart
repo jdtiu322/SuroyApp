@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:suroyapp/screens/home_screen.dart';
 import 'package:suroyapp/screens/signin_screen.dart';
+import 'package:suroyapp/screens/starting_page.dart';
 import 'package:suroyapp/utils/color_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
@@ -30,14 +31,7 @@ class SignUpScreenState extends State<SignUpScreen> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              hexStringToColor("FFFFFF"),
-              hexStringToColor("#2A61C8"),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+          color: Colors.white
         ),
         child: SingleChildScrollView(
           child: Padding(
@@ -104,7 +98,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                       });
 
                       print("New account created");
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => StartingPage()));
                     }
                   } catch (error) {
                     print("Invalid account details ${error.toString()}");
@@ -122,7 +116,7 @@ class SignUpScreenState extends State<SignUpScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Have an account already? Click here to", style: TextStyle(color: Colors.grey)),
+        const Text("Have an account already? Click here to", style: TextStyle(color:Color(0xfFF004AAD),)),
         GestureDetector(
           onTap: () {
             Navigator.push(
@@ -135,7 +129,7 @@ class SignUpScreenState extends State<SignUpScreen> {
           child: const Text(
             " log-in",
             style: TextStyle(
-              color: Colors.grey,
+              color: Color(0xfFF004AAD),
               fontWeight: FontWeight.w500,
               decoration: TextDecoration.underline,
               decorationColor: Colors.grey,

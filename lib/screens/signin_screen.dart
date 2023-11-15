@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/screens/home_screen.dart';
 import 'package:suroyapp/screens/signup_screen.dart';
+import 'package:suroyapp/screens/starting_page.dart';
 import 'package:suroyapp/utils/color_utils.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -22,16 +24,17 @@ class _SignInScreenState extends State<SignInScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
+        // decoration: BoxDecoration(
+        //   gradient: LinearGradient(
+        //     colors: [
+        //       hexStringToColor("FFFFFF"),
+        //       hexStringToColor("#2A61C8"),
+        //     ],
+        //     begin: Alignment.topCenter,
+        //     end: Alignment.bottomCenter,
+        //   ),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              hexStringToColor("FFFFFF"),
-              hexStringToColor("#2A61C8"),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+          color: Colors.white),
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.fromLTRB(
@@ -44,24 +47,23 @@ class _SignInScreenState extends State<SignInScreen> {
               children: <Widget>[
                 const SizedBox(height: 130),
                 logoWidget("assets/images/logo1.png"),
-                const SizedBox(height: 50),
-                const Align(  
+                const SizedBox(height: 30),
+                   Align(  
                   alignment: Alignment(0, -0.1),
                   child: Text(
                     "Welcome!",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.poppins(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
-                const Text(
+                Text(
                   "Login below or create an account",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontFamily: 'Poppins',
-                    color: Colors.white70,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    color: Color.fromARGB(179, 4, 23, 194),                 
                     decoration: TextDecoration.underline,
                     decorationColor: Colors.white70,
                   ),
@@ -91,7 +93,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => HomeScreen(),
+                        builder: (context) => StartingPage(),
                       ),
                     );
                   }).catchError((error, stackTrace) {
@@ -111,19 +113,21 @@ class _SignInScreenState extends State<SignInScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Don't have account?",
-            style: TextStyle(color: Colors.white70)),
+        Text("Don't have account?",
+            style:GoogleFonts.poppins(
+              color: Color(0xfFF004AAD),)),
         GestureDetector(
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SignUpScreen()));
             },
-            child: const Text(" Sign Up",
-                style: TextStyle(
-                    color: Colors.white70,
+            child: Text(" Sign Up",
+                style: 
+                    GoogleFonts.poppins(
+                    color: Color(0xfFF004AAD),
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
-                    decorationColor: Colors.white70)))
+                    decorationColor: Color(0xfFF004AAD),))),
       ],
     );
   }

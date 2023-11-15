@@ -1,5 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:suroyapp/screens/signin_screen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:suroyapp/screens/application_screen.dart';
+import 'package:suroyapp/screens/home_screen.dart';
+import 'package:suroyapp/screens/notification_screen.dart';
+import 'package:suroyapp/screens/profile_details.dart';
 
 Image logoWidget(String imageName) {
   return Image.asset(imageName, fit: BoxFit.fitWidth, width: 600);
@@ -15,7 +22,8 @@ TextField reusableTextField(String text, IconData icon, bool isPasswordType,
       enableSuggestions: !isPasswordType,
       autocorrect: !isPasswordType,
       cursorColor: Colors.blue,
-      style: TextStyle(color: Colors.black45.withOpacity(0.7)),
+      style: GoogleFonts.poppins(
+        color: Colors.black45.withOpacity(0.7)),
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.black),
         labelText: text,
@@ -43,7 +51,9 @@ TextEditingController controller) {
     child: TextField(
       controller : controller,
       cursorColor: Colors.blue,
-      style: TextStyle(color: Colors.black45.withOpacity(0.7)),
+      style: 
+        GoogleFonts.poppins(
+          color: Colors.black45.withOpacity(0.7)),
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.black),
         labelText: data,
@@ -75,10 +85,10 @@ Container signInSignUpButton(
         },
         child: Text(
           isLogin ? 'LOG IN' : 'SIGN UP',
-          style: const TextStyle(
+          style: 
+              GoogleFonts.poppins(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontFamily: 'Poppins',
               fontSize: 16),
         ),
         style: ButtonStyle(
@@ -93,3 +103,4 @@ Container signInSignUpButton(
         )),
   );
 }
+
