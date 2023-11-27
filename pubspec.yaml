@@ -14,11 +14,18 @@ dependencies:
   firebase_core: ^2.21.0
   cloud_firestore: ^4.13.0
   flutter_svg: ^2.0.9
-  google_fonts: ^6.1.0
+  google_fonts: ^4.0.4
   image_picker: ^1.0.4
   firebase_storage: ^11.5.0
   file_picker: ^6.1.1
   path_provider: ^2.1.1
+  fluttertoast: ^8.2.4
+  # geocoder2: ^1.4.0
+  google_maps_flutter: ^2.5.0
+  location: ^5.0.3
+  awesome_place_search: ^1.0.10
+  
+  
   
   
 

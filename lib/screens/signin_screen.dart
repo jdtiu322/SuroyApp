@@ -2,10 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
-import 'package:suroyapp/screens/home_screen.dart';
 import 'package:suroyapp/screens/signup_screen.dart';
 import 'package:suroyapp/screens/starting_page.dart';
-import 'package:suroyapp/utils/color_utils.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});

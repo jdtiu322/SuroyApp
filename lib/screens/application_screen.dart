@@ -1,13 +1,19 @@
 import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
-import 'package:suroyapp/screens/user_image.dart';
+import 'package:suroyapp/reusable_widgets/user_image.dart';
+import 'package:suroyapp/screens/address_screen.dart';
+import 'package:suroyapp/screens/home_screen.dart';
+import 'package:suroyapp/screens/starting_page.dart';
+import 'package:suroyapp/screens/vehicle_info.dart';
 import 'package:suroyapp/utils/color_utils.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:suroyapp/screens/signup_screen.dart';
 
 class Application extends StatefulWidget {
   const Application({super.key});
@@ -32,10 +38,41 @@ class _ApplicationState extends State<Application> {
   TextEditingController vehicleModel = TextEditingController();
   TextEditingController modelYear = TextEditingController();
   TextEditingController plateNumber = TextEditingController();
+  TextEditingController numSeats = TextEditingController();
 
   String? selectedVehicle = "";
 
-  String imageUrl= '';
+  String imageUrl = '';
+
+  final user = FirebaseAuth.instance.currentUser!;
+  late String firstName = ""; // Initialize with empty string
+  late String lastName = ""; // Initialize with empty string
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    try {
+      // Assume 'users' is the collection and 'userId' is the document ID
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+          .instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      if (snapshot.exists) {
+        setState(() {
+          firstName = snapshot.data()?['firstName'] ?? "";
+          lastName = snapshot.data()?['lastName'] ?? "";
+        });
+      }
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +139,11 @@ class _ApplicationState extends State<Application> {
                   height: 20,
                 ),
                 reusableTextField(
+                    "Number of seats", Icons.chair_alt, false, numSeats),
+                const SizedBox(
+                  height: 20,
+                ),
+                reusableTextField(
                     "Model Year", Icons.calendar_month, false, modelYear),
                 const SizedBox(
                   height: 20,
@@ -111,25 +153,45 @@ class _ApplicationState extends State<Application> {
                 const SizedBox(
                   height: 20,
                 ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    "Add image of your vehicle",
+                    style: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
                 UserImage(onFileChanged: ((imageUrl) {
                   setState(() {
                     this.imageUrl = imageUrl;
                   });
                 })),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        Text(
-                          "Add Vehicle Image",
-                          style: GoogleFonts.poppins(
-                              fontSize: 14, color: Colors.grey),
-                        )
-                      ],
-                    )
-                  ],
-                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    VehicleInformation1 vehicleInfo = VehicleInformation1(
+                      vehicleType: selectedVehicle ?? "",
+                      vehicleModel: vehicleModel.text,
+                      numSeats: numSeats.text,
+                      modelYear: modelYear.text,
+                      plateNumber: plateNumber.text,
+                      imageUrl: imageUrl,
+                    );
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            AddressRegistration(vehicleInfo: vehicleInfo),
+                      ),
+                    );
+                  },
+                  child: Text("Continue"),
+                )
               ],
             ),
           ),

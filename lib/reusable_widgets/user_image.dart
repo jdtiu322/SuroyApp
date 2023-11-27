@@ -23,12 +23,17 @@ class _UserImageState extends State<UserImage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (imageUrl == null) SvgPicture.asset('assets/vectors/add-image.svg'),
+        if (imageUrl == null) SvgPicture.asset('assets/vectors/add-image.svg', height: 150, width: 100,),
         if (imageUrl != null)
           InkWell(
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            onTap: () => _selectedPhoto(),
+            onTap: () => _selectedPhoto(), 
+            child: Image.network(
+              imageUrl!, 
+              height: 150,
+              fit: BoxFit.cover,
+            ),
           ),
         InkWell(
           onTap: () => _selectedPhoto(),

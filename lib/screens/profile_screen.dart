@@ -66,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             context, MaterialPageRoute(builder: (context) => const ProfileDetails()));
       },
       child: Container(
-          height: 80,
+          height: 110,
           decoration: const BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.grey)),
               color: Colors.white),
@@ -110,7 +110,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ))
               ],
             ),
-          )),
+          ),
+          ),
     ),
                   const SizedBox(
                     height: 20,
@@ -179,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: Image.asset('assets/images/landingpage.png',
-                                width: 150, height: 150),
+                                width: 130, height: 130),
                           )
                         ]),
                       ),

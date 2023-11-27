@@ -89,6 +89,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                       // Save additional user information to Firestore
                       await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
                         'email': emailTextController.text,
+                        'password': passwordTextController.text,
                         'firstName': firstNameTextController.text,
                         'middleName': middleNameTextController.text,
                         'lastName': lastNameTextController.text,

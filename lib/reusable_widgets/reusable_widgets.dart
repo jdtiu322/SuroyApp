@@ -15,8 +15,7 @@ TextField reusableTextField(String text, IconData icon, bool isPasswordType,
       enableSuggestions: !isPasswordType,
       autocorrect: !isPasswordType,
       cursorColor: Colors.blue,
-      style: GoogleFonts.poppins(
-        color: Colors.black45.withOpacity(0.7)),
+      style: GoogleFonts.poppins(color: Colors.black45.withOpacity(0.7)),
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.black),
         labelText: text,
@@ -33,20 +32,17 @@ TextField reusableTextField(String text, IconData icon, bool isPasswordType,
           : TextInputType.emailAddress);
 }
 
-
 Widget resizableTextField(
-  String data,
-  IconData icon,
-  double width, // Pass the desired width as a parameter
-TextEditingController controller) {
+    String data,
+    IconData icon,
+    double width, // Pass the desired width as a parameter
+    TextEditingController controller) {
   return SizedBox(
     width: width,
     child: TextField(
-      controller : controller,
+      controller: controller,
       cursorColor: Colors.blue,
-      style: 
-        GoogleFonts.poppins(
-          color: Colors.black45.withOpacity(0.7)),
+      style: GoogleFonts.poppins(color: Colors.black45.withOpacity(0.7)),
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.black),
         labelText: data,
@@ -88,12 +84,29 @@ Container signInSignUpButton(
         ),
         child: Text(
           isLogin ? 'LOG IN' : 'SIGN UP',
-          style: 
-              GoogleFonts.poppins(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
+          style: GoogleFonts.poppins(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
         )),
+  );
+}
+
+Container reserveButton() {
+  return Container(
+    decoration: BoxDecoration(
+      color: const Color(0xfff004aad),
+      borderRadius: BorderRadius.circular(10)),
+    height: 50,
+    width: 100,
+    child: Align(
+      alignment: Alignment.center,
+      child: Text(
+        "RESERVE",
+        style: GoogleFonts.inter(
+          color: Colors.white,
+          fontWeight: FontWeight.bold
+        ),
+      ),
+    ),
   );
 }
 
