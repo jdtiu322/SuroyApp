@@ -20,10 +20,19 @@ dependencies:
   file_picker: ^6.1.1
   path_provider: ^2.1.1
   fluttertoast: ^8.2.4
-  # geocoder2: ^1.4.0
+  geocoder2: ^1.4.0
   google_maps_flutter: ^2.5.0
   location: ^5.0.3
   awesome_place_search: ^1.0.10
+  geocoding: ^2.1.1
+  geolocator: ^10.1.0
+  flutter_google_places: ^0.3.0
+  google_api_headers: ^1.6.0
+  google_maps_webservice: ^0.0.20-nullsafety.5
+  awesome_snackbar_content: ^0.1.3
+  
+  
+ 
   
   
   

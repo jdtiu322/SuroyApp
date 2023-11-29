@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:suroyapp/screens/starting_page.dart';
 import 'package:suroyapp/screens/vehicle_info.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class PriceRegistration extends StatefulWidget {
   final VehicleInformation3 vehicleInfo;
@@ -29,6 +34,75 @@ class _PriceRegistrationState extends State<PriceRegistration> {
 
     return Scaffold(
       appBar: AppBar(),
+      bottomNavigationBar: BottomAppBar(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: Container(
+              height: 30,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/vectors/arrow.svg',
+                      width: 25,
+                      height: 25,
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          User? user = FirebaseAuth.instance.currentUser;
+
+                          if (user != null) {
+                            String userEmail =
+                                user.email ?? 'No email available';
+
+                            await FirebaseFirestore.instance
+                                .collection('renters')
+                                .doc(user.uid)
+                                .set({
+                              'email': userEmail,
+                              'hostName': widget.vehicleInfo.hostName,
+                              'vehicleType': widget.vehicleInfo.vehicleType,
+                              'vehicleModel': widget.vehicleInfo.vehicleModel,
+                              'modelYear': widget.vehicleInfo.modelYear,
+                              'licensePlateNum': widget.vehicleInfo.plateNumber,
+                              'vehicleImage': widget.vehicleInfo.imageUrl,
+                              'description': widget.vehicleInfo.vehicleDescription,
+                              'renterAddress': widget.vehicleInfo.pickUpAddress,
+                              'pricing': strTotalPrice
+                            });
+                            print("Registration Succesful!");
+                          }
+                        } catch (error) {
+                          print("Invalid account details ${error.toString()}");
+                        }
+                        Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => StartingPage()));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: const Color(0xfff004aad),
+                            borderRadius: BorderRadius.circular(10)),
+                        height: 50,
+                        width: 100,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "NEXT",
+                            style: GoogleFonts.inter(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    )
+                  ]),
+            ),
+          )),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,

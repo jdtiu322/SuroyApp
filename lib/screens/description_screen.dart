@@ -74,6 +74,7 @@ class _DescriptionRegistrationState extends State<DescriptionRegistration> {
                       pickUpAddress: widget.vehicleInfo.pickUpAddress,
                       vehicleType: widget.vehicleInfo.vehicleType,
                       vehicleModel: widget.vehicleInfo.vehicleModel,
+                      hostName: widget.vehicleInfo.hostName,
                       numSeats: widget.vehicleInfo.numSeats,
                       modelYear: widget.vehicleInfo.modelYear,
                       plateNumber: widget.vehicleInfo.plateNumber,

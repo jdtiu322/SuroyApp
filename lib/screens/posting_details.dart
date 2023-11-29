@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
+import 'package:suroyapp/screens/payment_screen.dart';
 
 class PostingDetails extends StatefulWidget {
   final String vehicleModel;
@@ -31,14 +32,16 @@ class PostingDetails extends StatefulWidget {
 }
 
 class _PostingDetailsState extends State<PostingDetails> {
+  DateTime currentDate = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
         child: Container(
-          height: 70,
+          height: 80,
           child: Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 10),
+            padding:
+                const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +52,7 @@ class _PostingDetailsState extends State<PostingDetails> {
                   children: [
                     RichText(
                       text: TextSpan(
-                        style:GoogleFonts.poppins(
+                        style: GoogleFonts.poppins(
                           fontSize: 12,
                         ),
                         children: <TextSpan>[
@@ -69,13 +72,39 @@ class _PostingDetailsState extends State<PostingDetails> {
                         ],
                       ),
                     ),
-                    Text("Date placeholder",
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                    ),),
+                    GestureDetector(
+                      onTap: () {
+                        showDatePicker(
+                            context: context,
+                            firstDate: DateTime(2023),
+                            initialDate: DateTime.now(),
+                            lastDate: DateTime(2030),
+                            builder: (BuildContext context, Widget? child) {
+                              return Theme(
+                                  data: ThemeData.dark(), child: child!);
+                            }).then((value) {
+                          setState(() {
+                            currentDate = value!;
+                          });
+                        });
+                      },
+                      child: Text(
+                        "Select Date",
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-                reserveButton(),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PaymentPage()));
+                    },
+                    child: reserveButton()),
               ],
             ),
           ),

@@ -173,37 +173,10 @@ class _ApplicationState extends State<Application> {
                 })),
                 ElevatedButton(
                   onPressed: () async {
-                    try {
-                        User? user = FirebaseAuth.instance.currentUser;
-
-                        if (user != null) {
-                          String userEmail = user.email ?? 'No email available';
-
-                          await FirebaseFirestore.instance
-                              .collection('renters')
-                              .doc(user.uid)
-                              .set({
-                            'email': userEmail,
-                            'hostName': firstName + " " + lastName,
-                            'vehicleType': selectedVehicle,
-                            'vehicleModel': vehicleModel.text,
-                            'modelYear': modelYear.text,
-                            'licensePlateNum': plateNumber.text,
-                            'vehicleImage': imageUrl,
-                          });
-
-                          print("Registration Succesful!");
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => StartingPage()));
-                        }
-                      } catch (error) {
-                        print("Invalid account details ${error.toString()}");
-                      }
                     VehicleInformation1 vehicleInfo = VehicleInformation1(
                       vehicleType: selectedVehicle ?? "",
                       vehicleModel: vehicleModel.text,
+                      hostName: firstName + lastName,
                       numSeats: numSeats.text,
                       modelYear: modelYear.text,
                       plateNumber: plateNumber.text,

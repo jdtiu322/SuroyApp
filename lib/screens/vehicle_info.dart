@@ -1,6 +1,7 @@
 class VehicleInformation1 {
   final String vehicleType;
   final String vehicleModel;
+  final String hostName;
   final String numSeats;
   final String modelYear;
   final String plateNumber;
@@ -9,6 +10,7 @@ class VehicleInformation1 {
   VehicleInformation1({
     required this.vehicleType,
     required this.vehicleModel,
+    required this.hostName,
     required this.numSeats,
     required this.modelYear,
     required this.plateNumber,
@@ -23,6 +25,7 @@ class VehicleInformation2 extends VehicleInformation1 {
     required this.pickUpAddress,
     required String vehicleType,
     required String vehicleModel,
+    required String hostName,
     required String numSeats,
     required String modelYear,
     required String plateNumber,
@@ -30,6 +33,7 @@ class VehicleInformation2 extends VehicleInformation1 {
   }) : super(
           vehicleType: vehicleType,
           vehicleModel: vehicleModel,
+          hostName: hostName,
           numSeats: numSeats,
           modelYear: modelYear,
           plateNumber: plateNumber,
@@ -45,6 +49,7 @@ class VehicleInformation3 extends VehicleInformation2 {
     required String pickUpAddress,
     required String vehicleType,
     required String vehicleModel,
+    required String hostName,
     required String numSeats,
     required String modelYear,
     required String plateNumber,
@@ -53,6 +58,7 @@ class VehicleInformation3 extends VehicleInformation2 {
           pickUpAddress: pickUpAddress,
           vehicleType: vehicleType,
           vehicleModel: vehicleModel,
+          hostName: hostName,
           numSeats: numSeats,
           modelYear: modelYear,
           plateNumber: plateNumber,
