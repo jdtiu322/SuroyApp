@@ -69,7 +69,9 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                               'modelYear': widget.vehicleInfo.modelYear,
                               'licensePlateNum': widget.vehicleInfo.plateNumber,
                               'vehicleImage': widget.vehicleInfo.imageUrl,
-                              'description': widget.vehicleInfo.vehicleDescription,
+                              'numSeats': widget.vehicleInfo.numSeats,
+                              'description':
+                                  widget.vehicleInfo.vehicleDescription,
                               'renterAddress': widget.vehicleInfo.pickUpAddress,
                               'pricing': strTotalPrice
                             });
@@ -78,10 +80,21 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                         } catch (error) {
                           print("Invalid account details ${error.toString()}");
                         }
+                        FinalVehicleInfo finalVehicleInfo = FinalVehicleInfo(
+                            rentPrice: rentPrice,
+                            vehicleDescrition: widget.vehicleInfo.vehicleDescription,
+                            pickUpAddress: widget.vehicleInfo.pickUpAddress,
+                            vehicleType: widget.vehicleInfo.vehicleType,
+                            vehicleModel: widget.vehicleInfo.vehicleModel,
+                            hostName: widget.vehicleInfo.hostName,
+                            numSeats: widget.vehicleInfo.numSeats,
+                            modelYear: widget.vehicleInfo.modelYear,
+                            plateNumber: widget.vehicleInfo.plateNumber,
+                            imageUrl: widget.vehicleInfo.plateNumber);
                         Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => StartingPage()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StartingPage()));
                       },
                       child: Container(
                         decoration: BoxDecoration(

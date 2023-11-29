@@ -65,3 +65,59 @@ class VehicleInformation3 extends VehicleInformation2 {
           imageUrl: imageUrl,
         );
 }
+
+class FinalVehicleInfo extends VehicleInformation3 {
+  final String rentPrice;
+
+  FinalVehicleInfo({
+    required this.rentPrice,
+ required String vehicleDescrition,
+    required String pickUpAddress,
+    required String vehicleType,
+    required String vehicleModel,
+    required String hostName,
+    required String numSeats,
+    required String modelYear,
+    required String plateNumber,
+    required String imageUrl,
+  }) : super(
+          vehicleDescription: vehicleDescrition,
+          pickUpAddress: pickUpAddress,
+          vehicleType: vehicleType,
+          vehicleModel: vehicleModel,
+          hostName: hostName,
+          numSeats: numSeats,
+          modelYear: modelYear,
+          plateNumber: plateNumber,
+          imageUrl: imageUrl,
+        );
+}
+
+class VehicleInformationWithDate extends VehicleInformation3 {
+  final DateTime startDate;
+  final DateTime endDate;
+
+  VehicleInformationWithDate({
+    required this.startDate,
+    required this.endDate,
+    required String vehicleDescrition,
+    required String pickUpAddress,
+    required String vehicleType,
+    required String vehicleModel,
+    required String hostName,
+    required String numSeats,
+    required String modelYear,
+    required String plateNumber,
+    required String imageUrl,
+  }) : super(
+          vehicleDescription: vehicleDescrition,
+          pickUpAddress: pickUpAddress,
+          vehicleType: vehicleType,
+          vehicleModel: vehicleModel,
+          hostName: hostName,
+          numSeats: numSeats,
+          modelYear: modelYear,
+          plateNumber: plateNumber,
+          imageUrl: imageUrl,
+        );
+}

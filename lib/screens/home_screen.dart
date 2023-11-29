@@ -48,7 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             rentPrice: docs[index]['pricing'],
                             description: docs[index]['description'],
                             vImageURL: docs[index]['vehicleImage'],
-                            vehicleType: docs[index]['vehicleType'],       
+                            vehicleType: docs[index]['vehicleType'],
+                            plateNum: docs[index]['licensePlateNum'],
+                            numOfSeats: docs[index]['numSeats'],
+                            vehicleAddress: docs[index]['renterAddress'],
                           )));
                 },
                 child: Container(

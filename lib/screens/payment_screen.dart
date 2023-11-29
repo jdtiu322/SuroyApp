@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pay/pay.dart';
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({super.key});
@@ -8,6 +9,20 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage>{
+    var googlePayButton = GooglePayButton(
+      // paymentConfiguration: ,
+    onPaymentResult: (result) => debugPrint('Paymenr Result $result'),
+    loadingIndicator: const Center(child: CircularProgressIndicator()), 
+    paymentItems: [
+      PaymentItem(
+        label: 'Total',
+        amount: '1,000',
+        status: PaymentItemStatus.final_price
+      )
+    ],
+    width: double.infinity,
+    margin: const EdgeInsets.only(top: 15.0),
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +39,9 @@ class _PaymentPageState extends State<PaymentPage>{
                 color: Colors.blue,
                 child: Row(
                   children: [
-
+                    Center(
+                      child: googlePayButton,
+                    )
                   ],
                 ),
               )
