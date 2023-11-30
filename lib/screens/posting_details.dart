@@ -21,6 +21,7 @@ class PostingDetails extends StatefulWidget {
   final String plateNum;
   final String numOfSeats;
   final String vehicleAddress;
+  
 
   const PostingDetails({
     Key? key,
@@ -49,6 +50,7 @@ class _PostingDetailsState extends State<PostingDetails> {
   String endMonth = "";
   late GoogleMapController mapController;
   List<Marker> _markers = [];
+
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +240,7 @@ class _PostingDetailsState extends State<PostingDetails> {
                       },
                       initialCameraPosition: CameraPosition(
                         target: LatLng(0.0, 0.0), // Default location
-                        zoom: 16.0,
+                        zoom: 20.0,
                       ),
                       markers: Set.from(_markers),
                     ),
@@ -344,11 +346,14 @@ class _PostingDetailsState extends State<PostingDetails> {
                       modelYear: widget.modelYear,
                       plateNumber: widget.plateNum,
                       imageUrl: widget.vImageURL,
+                      rentPrice: widget.rentPrice,
                     );
 
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PaymentPage()),
+                      MaterialPageRoute(builder: (context) => PaymentPage(
+                        vehicleInfo: vehicleInformationWithDate,
+                      )),
                     );
                   },
                   child: reserveButton(),

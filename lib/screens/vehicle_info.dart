@@ -71,7 +71,7 @@ class FinalVehicleInfo extends VehicleInformation3 {
 
   FinalVehicleInfo({
     required this.rentPrice,
- required String vehicleDescrition,
+  required String vehicleDescription,
     required String pickUpAddress,
     required String vehicleType,
     required String vehicleModel,
@@ -81,7 +81,7 @@ class FinalVehicleInfo extends VehicleInformation3 {
     required String plateNumber,
     required String imageUrl,
   }) : super(
-          vehicleDescription: vehicleDescrition,
+          vehicleDescription: vehicleDescription,
           pickUpAddress: pickUpAddress,
           vehicleType: vehicleType,
           vehicleModel: vehicleModel,
@@ -93,13 +93,14 @@ class FinalVehicleInfo extends VehicleInformation3 {
         );
 }
 
-class VehicleInformationWithDate extends VehicleInformation3 {
+class VehicleInformationWithDate extends FinalVehicleInfo {
   final DateTime startDate;
   final DateTime endDate;
 
   VehicleInformationWithDate({
     required this.startDate,
     required this.endDate,
+    required String rentPrice,
     required String vehicleDescrition,
     required String pickUpAddress,
     required String vehicleType,
@@ -109,7 +110,10 @@ class VehicleInformationWithDate extends VehicleInformation3 {
     required String modelYear,
     required String plateNumber,
     required String imageUrl,
+  
+
   }) : super(
+          rentPrice: rentPrice,
           vehicleDescription: vehicleDescrition,
           pickUpAddress: pickUpAddress,
           vehicleType: vehicleType,

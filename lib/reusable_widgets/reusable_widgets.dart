@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:geocoder2/geocoder2.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 Image logoWidget(String imageName) {
   return Image.asset(imageName, fit: BoxFit.fitWidth, width: 600);
@@ -110,3 +112,44 @@ Container reserveButton() {
   );
 }
 
+ LatLng convertStringToLatLng(String latLngString) {
+    String cleanedString = latLngString.replaceAll('LatLng(', '').replaceAll(')', '');
+    List<String> latLngParts = cleanedString.split(',');
+
+    if (latLngParts.length == 2) {
+      double latitude = double.parse(latLngParts[0].trim());
+      double longitude = double.parse(latLngParts[1].trim());
+
+      return LatLng(latitude, longitude);
+    } else {
+      throw FormatException('Invalid LatLng string format');
+    }
+  }
+
+ Future<String> getAddressFrom(LatLng location) async {
+    GeoData data = await Geocoder2.getDataFromCoordinates(
+      latitude: location.latitude,
+      longitude: location.longitude,
+      googleMapApiKey: "AIzaSyANSqv9C0InmgUe-druqtq_qfD1rKPRZHc",
+    );
+    if (data != null) {
+      return data.address;
+    } else {
+      return "No address found";
+    }
+  }
+
+  
+Future<String> getDisplayAddress(String coordinates) async {
+  LatLng latLngAddress = convertStringToLatLng(coordinates);
+  String address = await getAddressFrom(latLngAddress);
+
+  return address;
+}
+
+int calculateTotalDays(DateTime startDate, DateTime endDate) {
+  Duration difference = endDate.difference(startDate);
+  int totalDays = difference.inDays;
+
+  return totalDays;
+}

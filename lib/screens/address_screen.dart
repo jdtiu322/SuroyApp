@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart' as places;
 import 'package:location/location.dart';
+import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/screens/description_screen.dart';
 import 'package:suroyapp/screens/vehicle_info.dart';
 import 'package:geocoder2/geocoder2.dart';
@@ -345,16 +346,4 @@ class _AddressRegistrationState extends State<AddressRegistration> {
     );
   }
 
-  Future<String> getAddressFrom(LatLng location) async {
-    GeoData data = await Geocoder2.getDataFromCoordinates(
-      latitude: location.latitude,
-      longitude: location.longitude,
-      googleMapApiKey: "AIzaSyANSqv9C0InmgUe-druqtq_qfD1rKPRZHc",
-    );
-    if (data != null) {
-      return data.address;
-    } else {
-      return "No address found";
-    }
-  }
 }
