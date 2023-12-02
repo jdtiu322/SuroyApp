@@ -6,8 +6,7 @@ import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/screens/payment_screen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:suroyapp/screens/address_screen.dart';
-import 'package:suroyapp/screens/vehicle_info.dart';
+import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
 
 
 class PostingDetails extends StatefulWidget {
@@ -21,7 +20,9 @@ class PostingDetails extends StatefulWidget {
   final String plateNum;
   final String numOfSeats;
   final String vehicleAddress;
-  
+  final String hostAge;
+  final String hostMobileNumber;
+  final String email;
 
   const PostingDetails({
     Key? key,
@@ -35,6 +36,10 @@ class PostingDetails extends StatefulWidget {
     required this.plateNum,
     required this.numOfSeats,
     required this.vehicleAddress,
+    required this.hostAge,
+    required this.hostMobileNumber,
+    required this.email,
+
   }) : super(key: key);
 
   @override
@@ -231,7 +236,9 @@ class _PostingDetailsState extends State<PostingDetails> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Container(
                     child: GoogleMap(
-                      mapType: MapType.hybrid,
+                      mapType: MapType.normal,
+                      scrollGesturesEnabled: false,
+                      zoomControlsEnabled: false,
                       onMapCreated: (controller) {
                         setState(() {
                           mapController = controller;
@@ -240,7 +247,7 @@ class _PostingDetailsState extends State<PostingDetails> {
                       },
                       initialCameraPosition: CameraPosition(
                         target: LatLng(0.0, 0.0), // Default location
-                        zoom: 20.0,
+                        zoom: 15,
                       ),
                       markers: Set.from(_markers),
                     ),
@@ -259,7 +266,7 @@ class _PostingDetailsState extends State<PostingDetails> {
           height: 80,
           child: Padding(
             padding:
-                const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
+                const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,6 +354,9 @@ class _PostingDetailsState extends State<PostingDetails> {
                       plateNumber: widget.plateNum,
                       imageUrl: widget.vImageURL,
                       rentPrice: widget.rentPrice,
+                      hostAge: widget.hostAge,
+                      hostMobileNumber: widget.hostMobileNumber,
+                      email: widget.email,
                     );
 
                     Navigator.push(

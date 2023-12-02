@@ -12,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _userStream =
-      FirebaseFirestore.instance.collection('renters').snapshots();
+      FirebaseFirestore.instance.collection('vehicleListings').snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Text('Waiting for conenection');
           }
-
           var docs = snapshot.data!.docs;
-
           // return Text('${docs.length}');
           return ListView.builder(
             itemCount: docs.length,
@@ -42,17 +40,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => PostingDetails(
-                            vehicleModel: docs[index]['vehicleModel'],
-                            modelYear: docs[index]['modelYear'],
-                            hostName: docs[index]['hostName'],
-                            rentPrice: docs[index]['pricing'],
-                            description: docs[index]['description'],
-                            vImageURL: docs[index]['vehicleImage'],
-                            vehicleType: docs[index]['vehicleType'],
-                            plateNum: docs[index]['licensePlateNum'],
-                            numOfSeats: docs[index]['numSeats'],
-                            vehicleAddress: docs[index]['renterAddress'],
-                          )));
+                                vehicleModel: docs[index]['vehicleModel'],
+                                modelYear: docs[index]['modelYear'],
+                                hostName: docs[index]['hostName'],
+                                rentPrice: docs[index]['pricing'],
+                                description: docs[index]['description'],
+                                vImageURL: docs[index]['vehicleImage'],
+                                vehicleType: docs[index]['vehicleType'],
+                                plateNum: docs[index]['licensePlateNum'],
+                                numOfSeats: docs[index]['numSeats'],
+                                vehicleAddress: docs[index]['renterAddress'],
+                                hostAge: docs[index]['hostAge'],
+                                hostMobileNumber: docs[index]['hostMobileNumber'],
+                                email: docs[index]['email'],
+                                
+                              )));
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -95,8 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 25),
-                        child: Text("PHP" +
-                         docs[index]['pricing'],
+                        child: Text(
+                          "PHP" + docs[index]['pricing'],
                           style:
                               GoogleFonts.poppins(fontWeight: FontWeight.w600),
                         ),

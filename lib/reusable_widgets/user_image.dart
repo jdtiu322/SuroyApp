@@ -31,6 +31,7 @@ class _UserImageState extends State<UserImage> {
             onTap: () => _selectedPhoto(), 
             child: Image.network(
               imageUrl!, 
+              width: 350,
               height: 150,
               fit: BoxFit.cover,
             ),

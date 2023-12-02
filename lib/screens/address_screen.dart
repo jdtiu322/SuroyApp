@@ -8,7 +8,7 @@ import 'package:google_maps_webservice/places.dart' as places;
 import 'package:location/location.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/screens/description_screen.dart';
-import 'package:suroyapp/screens/vehicle_info.dart';
+import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
 import 'package:geocoder2/geocoder2.dart';
 
 class AddressRegistration extends StatefulWidget {
@@ -332,6 +332,9 @@ class _AddressRegistrationState extends State<AddressRegistration> {
       modelYear: widget.vehicleInfo.modelYear,
       plateNumber: widget.vehicleInfo.plateNumber,
       imageUrl: widget.vehicleInfo.imageUrl,
+      hostAge: widget.vehicleInfo.hostAge,
+      hostMobileNumber: widget.vehicleInfo.hostMobileNumber,
+      email: widget.vehicleInfo.email,
     );
 
     print('Selected Location: $selectedPosition');

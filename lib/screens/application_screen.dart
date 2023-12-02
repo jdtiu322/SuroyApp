@@ -9,7 +9,7 @@ import 'package:suroyapp/reusable_widgets/user_image.dart';
 import 'package:suroyapp/screens/address_screen.dart';
 import 'package:suroyapp/screens/home_screen.dart';
 import 'package:suroyapp/screens/starting_page.dart';
-import 'package:suroyapp/screens/vehicle_info.dart';
+import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
 import 'package:suroyapp/utils/color_utils.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -45,9 +45,11 @@ class _ApplicationState extends State<Application> {
   String imageUrl = '';
 
   final user = FirebaseAuth.instance.currentUser!;
-  late String firstName = ""; // Initialize with empty string
-  late String lastName = ""; // Initialize with empty string
-
+  late String firstName = "";
+  late String lastName = "";
+  late String age = "";
+  late String phoneNumber = "";
+  late String email = "";
   @override
   void initState() {
     super.initState();
@@ -67,6 +69,9 @@ class _ApplicationState extends State<Application> {
         setState(() {
           firstName = snapshot.data()?['firstName'] ?? "";
           lastName = snapshot.data()?['lastName'] ?? "";
+          age = snapshot.data()?['age'] ?? "";
+          phoneNumber = snapshot.data()?['phoneNumber'] ?? "";
+          email = snapshot.data()?['email'] ?? "";
         });
       }
     } catch (e) {
@@ -176,11 +181,14 @@ class _ApplicationState extends State<Application> {
                     VehicleInformation1 vehicleInfo = VehicleInformation1(
                       vehicleType: selectedVehicle ?? "",
                       vehicleModel: vehicleModel.text,
-                      hostName: firstName + lastName,
+                      hostName: firstName + " " + lastName,
                       numSeats: numSeats.text,
                       modelYear: modelYear.text,
                       plateNumber: plateNumber.text,
                       imageUrl: imageUrl,
+                      hostAge: age,
+                      hostMobileNumber: phoneNumber,
+                      email: email,
                     );
 
                     Navigator.push(

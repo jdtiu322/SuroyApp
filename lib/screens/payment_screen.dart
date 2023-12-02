@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -5,7 +7,8 @@ import 'package:google_maps_webservice/directions.dart';
 import 'package:intl/intl.dart';
 import 'package:pay/pay.dart';
 import 'package:suroyapp/payment_configurations.dart';
-import 'package:suroyapp/screens/vehicle_info.dart';
+import 'package:suroyapp/screens/bookings_screen.dart';
+import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -67,7 +70,36 @@ class _PaymentPageState extends State<PaymentPage> {
             status: PaymentItemStatus.final_price,
           )
         ],
-        onPaymentResult: (result) => debugPrint('Payment Result $result'),
+        onPaymentResult: (result) async {
+          if (result != null) {
+            try {
+              User? user = FirebaseAuth.instance.currentUser;
+              if (user != null) {
+                await FirebaseFirestore.instance.collection('bookings').add({
+                  'renterID': user.uid,
+                  'transactionAmount': displayTotal,
+                  'description': widget.vehicleInfo.vehicleDescription,
+                  'startDate': widget.vehicleInfo.startDate,
+                  'endDate': widget.vehicleInfo.endDate,
+                  'pickUpAddress': widget.vehicleInfo.pickUpAddress,
+                  'vehicleType': widget.vehicleInfo.vehicleType,
+                  'vehicleModel': widget.vehicleInfo.vehicleModel,
+                  'plateNumber': widget.vehicleInfo.plateNumber,
+                  'imageUrl': widget.vehicleInfo.imageUrl,
+                  'hostName': widget.vehicleInfo.hostName,
+                  'modelYear': widget.vehicleInfo.modelYear,
+                  'hostAge': widget.vehicleInfo.hostAge,
+                  'hostMobileNumber': widget.vehicleInfo.hostMobileNumber,
+                  'email' : widget.vehicleInfo.email,
+                });
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => BookingsScreen()));
+              }
+            } catch (error) {
+              print("Invalid account details ${error.toString()}");
+            }
+          }
+        },
         loadingIndicator: const Center(child: CircularProgressIndicator()),
         width: double.infinity,
         type: GooglePayButtonType.book,
@@ -88,7 +120,7 @@ class _PaymentPageState extends State<PaymentPage> {
               20, MediaQuery.of(context).size.height * 0, 20, 0),
           child: Column(
             children: <Widget>[
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
@@ -104,7 +136,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         width: 150,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     Column(
@@ -129,74 +161,65 @@ class _PaymentPageState extends State<PaymentPage> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-              Divider(
+              const Divider(
                 height: 15,
               ),
               Container(
-                height: 150,
-                child: Row(
-                  children: [
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                height: 170,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Your booking details",
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Dates",
+                        style: GoogleFonts.poppins(
+                            fontSize: 13, fontWeight: FontWeight.w600),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "Your booking details",
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
+                              "$startMonth ${widget.vehicleInfo.startDate.day} - $endMonth ${widget.vehicleInfo.endDate.day}"),
+                          const SizedBox(
+                            width: 180,
                           ),
                           Text(
-                            "Dates",
+                            "Change Date",
                             style: GoogleFonts.poppins(
-                                fontSize: 13, fontWeight: FontWeight.w600),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(startMonth +
-                                  " " +
-                                  widget.vehicleInfo.startDate.day.toString() +
-                                  " - " +
-                                  endMonth +
-                                  " " +
-                                  widget.vehicleInfo.endDate.day.toString()),
-                              SizedBox(
-                                width: 180,
-                              ),
-                              Text(
-                                "Change Date",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text("Vehicle Location",
-                              style: GoogleFonts.poppins(
-                                  fontSize: 13, fontWeight: FontWeight.w600)),
-                          Text(displayAddress),
-                        ]),
-                  ],
-                ),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              decoration: TextDecoration.underline,
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text("Vehicle Location",
+                          style: GoogleFonts.poppins(
+                              fontSize: 13, fontWeight: FontWeight.w600)),
+                      Text(displayAddress),
+                    ]),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-              Divider(
+              const Divider(
                 height: 15,
               ),
               Container(
@@ -210,7 +233,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         )),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
@@ -240,7 +263,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Row(
@@ -265,7 +288,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Row(
@@ -294,10 +317,10 @@ class _PaymentPageState extends State<PaymentPage> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-              Divider(
+              const Divider(
                 height: 15,
               ),
               Container(
@@ -328,7 +351,6 @@ class _PaymentPageState extends State<PaymentPage> {
               ),
               Container(
                 height: 120,
-                color: Colors.blue,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -343,14 +365,14 @@ class _PaymentPageState extends State<PaymentPage> {
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                           )),
-                          SizedBox(height: 5,),
-                      Text(
-                          "- Follow the Host's Vehicle Rules",
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text("- Follow the Host's Vehicle Rules",
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                           )),
-                          Text(
-                          "- Treat the vehicle like your own",
+                      Text("- Treat the vehicle like your own",
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                           )),
@@ -358,12 +380,8 @@ class _PaymentPageState extends State<PaymentPage> {
               ),
               Container(
                 height: 100,
-                color: Colors.purple,
                 child: Center(
-                  child: GestureDetector(
-                    onTap: (){},
-                    child: googlePayButton
-                    ),
+                  child: googlePayButton,
                 ),
               )
             ],

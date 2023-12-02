@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:suroyapp/screens/starting_page.dart';
-import 'package:suroyapp/screens/vehicle_info.dart';
+import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -55,30 +55,29 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                       User? user = FirebaseAuth.instance.currentUser;
 
                       if (user != null) {
-                        String userEmail =
-                            user.email ?? 'No email available';
-                            
-                        DocumentReference vehicleRef =
-                            await FirebaseFirestore.instance
-                                .collection('vehicleListings')
-                                .add({
-                              'userId': user.uid,
-                              'email': userEmail,
-                              'hostName': widget.vehicleInfo.hostName,
-                              'vehicleType': widget.vehicleInfo.vehicleType,
-                              'vehicleModel': widget.vehicleInfo.vehicleModel,
-                              'modelYear': widget.vehicleInfo.modelYear,
-                              'licensePlateNum':
-                                  widget.vehicleInfo.plateNumber,
-                              'vehicleImage': widget.vehicleInfo.imageUrl,
-                              'numSeats': widget.vehicleInfo.numSeats,
-                              'description':
-                                  widget.vehicleInfo.vehicleDescription,
-                              'renterAddress':
-                                  widget.vehicleInfo.pickUpAddress,
-                              'pricing': strTotalPrice,
-                              'timestamp': FieldValue.serverTimestamp(),
-                            });
+                        String userEmail = user.email ?? 'No email available';
+                        String hostAge = user.phoneNumber ?? 'Invalid number';
+
+                        DocumentReference vehicleRef = await FirebaseFirestore
+                            .instance
+                            .collection('vehicleListings')
+                            .add({
+                          'userId': user.uid,
+                          'email': userEmail,
+                          'hostAge': widget.vehicleInfo.hostAge,
+                          'hostMobileNumber': widget.vehicleInfo.hostMobileNumber,
+                          'hostName': widget.vehicleInfo.hostName,
+                          'vehicleType': widget.vehicleInfo.vehicleType,
+                          'vehicleModel': widget.vehicleInfo.vehicleModel,
+                          'modelYear': widget.vehicleInfo.modelYear,
+                          'licensePlateNum': widget.vehicleInfo.plateNumber,
+                          'vehicleImage': widget.vehicleInfo.imageUrl,
+                          'numSeats': widget.vehicleInfo.numSeats,
+                          'description': widget.vehicleInfo.vehicleDescription,
+                          'renterAddress': widget.vehicleInfo.pickUpAddress,
+                          'pricing': strTotalPrice,
+                          'timestamp': FieldValue.serverTimestamp(),
+                        });
 
                         print("Registration Successful!");
                       }
@@ -96,6 +95,9 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                       modelYear: widget.vehicleInfo.modelYear,
                       plateNumber: widget.vehicleInfo.plateNumber,
                       imageUrl: widget.vehicleInfo.plateNumber,
+                      hostAge: widget.vehicleInfo.hostAge,
+                      hostMobileNumber: widget.vehicleInfo.hostMobileNumber,
+                      email: widget.vehicleInfo.email,
                     );
                     Navigator.push(
                       context,
@@ -223,7 +225,7 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "Service Fee",
+                              "Guest Fee",
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
