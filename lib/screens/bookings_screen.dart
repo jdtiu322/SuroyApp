@@ -26,7 +26,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
       userID = user!.uid;
       _userStream = FirebaseFirestore.instance
           .collection('bookings')
-          .where('renterID', isEqualTo: userID)
+          .where('renterID', isEqualTo: userID )
           .snapshots();
     }
   }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
+import 'package:suroyapp/screens/cancellation_screen.dart';
 
 class BookingDetailsScreen extends StatefulWidget {
   final BookingInfo bookingDetails;
@@ -54,17 +56,91 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomAppBar(
+          padding: EdgeInsets.symmetric(horizontal: 70, vertical: 10),
+          height: 70,
+          color: Colors.white,
+          child: ElevatedButton(
+            onPressed: () {
+              BookingInfo bookingInfo = BookingInfo(
+                  startDate: widget.bookingDetails.startDate,
+                  endDate: widget.bookingDetails.endDate,
+                  hostName: widget.bookingDetails.hostName,
+                  pickUpAddress: widget.bookingDetails.pickUpAddress,
+                  plateNumber: widget.bookingDetails.plateNumber,
+                  transactionAmount: widget.bookingDetails.transactionAmount,
+                  vehicleModel: widget.bookingDetails.vehicleModel,
+                  vehicleType: widget.bookingDetails.vehicleType,
+                  modelYear: widget.bookingDetails.modelYear,
+                  imageUrl: widget.bookingDetails.imageUrl,
+                  hostAge: widget.bookingDetails.hostAge,
+                  hostMobileNumber: widget.bookingDetails.hostMobileNumber,
+                  email: widget.bookingDetails.email);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CancellationPage(
+                            bookingInfo: bookingInfo,
+                          )));
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                Color(0xfff004aad),
+              ),
+              // padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+              //   EdgeInsets.symmetric(horizontal: 30)
+              // )
+            ),
+            child: Text(
+              "Cancel Reservation",
+              style: GoogleFonts.poppins(
+                fontSize: 18,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )),
       appBar: AppBar(),
       body: ListView(
         children: [
           Container(
             height: 220,
             color: Colors.blue,
-            child: Image.network(
-              widget.bookingDetails.imageUrl,
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.fitWidth,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.network(
+                  widget.bookingDetails.imageUrl,
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.fitWidth,
+                ),
+                Positioned(
+                    top: 160,
+                    left: 20,
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: widget.bookingDetails.vehicleModel,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 36,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " ," + widget.bookingDetails.modelYear,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+              ],
             ),
           ),
           SizedBox(
@@ -74,7 +150,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
             width: MediaQuery.of(context).size.width,
             height: 420,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,7 +231,10 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 5,
+                  ),
+                  Divider(
+                    height: 5,
                   ),
                   Container(
                     child: Column(
@@ -163,77 +242,107 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Additional Host Details",
+                          "More About The Host",
                           style: GoogleFonts.poppins(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Host Name: ",
-                                style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Column(
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "Host Name: ",
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.black,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: widget.bookingDetails.hostName,
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.black,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: widget.bookingDetails.hostName,
-                                style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.normal,
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "Mobile Number: ",
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.black,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: widget
+                                            .bookingDetails.hostMobileNumber,
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.black,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Mobile Number: ",
-                                style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "Email address: ",
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.black,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: widget.bookingDetails.email,
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.black,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 30),
+                              child: Column(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/vectors/message-square.svg',
+                                    width: 40,
+                                  ),
+                                  Text(
+                                    "Message the Host",
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                        decoration: TextDecoration.underline,
+                                        decorationThickness: 2.0),
+                                  )
+                                ],
                               ),
-                              TextSpan(
-                                text: widget.bookingDetails.hostMobileNumber,
-                                style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Email address: ",
-                                style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              TextSpan(
-                                text: widget.bookingDetails.email,
-                                style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
+                            )
+                          ],
                         ),
                       ],
                     ),
@@ -241,9 +350,6 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                 ],
               ),
             ),
-          ),
-          SizedBox(
-            height: 10,
           ),
         ],
       ),
