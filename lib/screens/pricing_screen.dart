@@ -57,12 +57,13 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                       if (user != null) {
                         String userEmail = user.email ?? 'No email available';
                         String hostAge = user.phoneNumber ?? 'Invalid number';
+                        bool _isAvailable = true;
 
                         DocumentReference vehicleRef = await FirebaseFirestore
                             .instance
                             .collection('vehicleListings')
                             .add({
-                          'userId': user.uid,
+                          'hostId': user.uid,
                           'email': userEmail,
                           'hostAge': widget.vehicleInfo.hostAge,
                           'hostMobileNumber': widget.vehicleInfo.hostMobileNumber,
@@ -77,6 +78,7 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                           'renterAddress': widget.vehicleInfo.pickUpAddress,
                           'pricing': strTotalPrice,
                           'timestamp': FieldValue.serverTimestamp(),
+                          'isAvailable': _isAvailable
                         });
 
                         print("Registration Successful!");
@@ -294,3 +296,4 @@ class _PriceRegistrationState extends State<PriceRegistration> {
     super.dispose();
   }
 }
+

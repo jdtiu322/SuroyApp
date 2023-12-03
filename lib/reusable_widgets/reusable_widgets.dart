@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder2/geocoder2.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:suroyapp/screens/bookings_screen.dart';
 
 Image logoWidget(String imageName) {
   return Image.asset(imageName, fit: BoxFit.fitWidth, width: 600);
@@ -95,51 +98,49 @@ Container signInSignUpButton(
 Container reserveButton() {
   return Container(
     decoration: BoxDecoration(
-      color: const Color(0xfff004aad),
-      borderRadius: BorderRadius.circular(10)),
+        color: const Color(0xfff004aad),
+        borderRadius: BorderRadius.circular(10)),
     height: 50,
     width: 100,
     child: Align(
       alignment: Alignment.center,
       child: Text(
         "RESERVE",
-        style: GoogleFonts.inter(
-          color: Colors.white,
-          fontWeight: FontWeight.bold
-        ),
+        style:
+            GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold),
       ),
     ),
   );
 }
 
- LatLng convertStringToLatLng(String latLngString) {
-    String cleanedString = latLngString.replaceAll('LatLng(', '').replaceAll(')', '');
-    List<String> latLngParts = cleanedString.split(',');
+LatLng convertStringToLatLng(String latLngString) {
+  String cleanedString =
+      latLngString.replaceAll('LatLng(', '').replaceAll(')', '');
+  List<String> latLngParts = cleanedString.split(',');
 
-    if (latLngParts.length == 2) {
-      double latitude = double.parse(latLngParts[0].trim());
-      double longitude = double.parse(latLngParts[1].trim());
+  if (latLngParts.length == 2) {
+    double latitude = double.parse(latLngParts[0].trim());
+    double longitude = double.parse(latLngParts[1].trim());
 
-      return LatLng(latitude, longitude);
-    } else {
-      throw FormatException('Invalid LatLng string format');
-    }
+    return LatLng(latitude, longitude);
+  } else {
+    throw FormatException('Invalid LatLng string format');
   }
+}
 
- Future<String> getAddressFrom(LatLng location) async {
-    GeoData data = await Geocoder2.getDataFromCoordinates(
-      latitude: location.latitude,
-      longitude: location.longitude,
-      googleMapApiKey: "AIzaSyANSqv9C0InmgUe-druqtq_qfD1rKPRZHc",
-    );
-    if (data != null) {
-      return data.address;
-    } else {
-      return "No address found";
-    }
+Future<String> getAddressFrom(LatLng location) async {
+  GeoData data = await Geocoder2.getDataFromCoordinates(
+    latitude: location.latitude,
+    longitude: location.longitude,
+    googleMapApiKey: "AIzaSyANSqv9C0InmgUe-druqtq_qfD1rKPRZHc",
+  );
+  if (data != null) {
+    return data.address;
+  } else {
+    return "No address found";
   }
+}
 
-  
 Future<String> getDisplayAddress(String coordinates) async {
   LatLng latLngAddress = convertStringToLatLng(coordinates);
   String address = await getAddressFrom(latLngAddress);
@@ -152,4 +153,42 @@ int calculateTotalDays(DateTime startDate, DateTime endDate) {
   int totalDays = difference.inDays;
 
   return totalDays;
+}
+
+ElevatedButton cancellationButton(BuildContext context) {
+  return ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(
+        Color(0xfff004aad),
+      )),
+      onPressed: () async {
+        try {
+          User? user = FirebaseAuth.instance.currentUser;
+          String renterID = "";
+          if (user != null) {
+            renterID = user.uid;
+
+            CollectionReference bookings =
+                FirebaseFirestore.instance.collection('bookings');
+
+            QuerySnapshot chuGwapo =
+                await bookings.where('renterID', isEqualTo: renterID).get();
+
+            DocumentSnapshot chuCutie = chuGwapo.docs.first;
+
+            String copyRenterId = chuCutie.id;
+
+            await bookings.doc(copyRenterId).delete();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => BookingsScreen()));
+
+          }
+        } catch (error) {
+          print("Error: $error");
+        }
+      },
+      child: Text(
+        "Confirm Cancellation",
+        style: GoogleFonts.poppins(
+            fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+      ));
 }

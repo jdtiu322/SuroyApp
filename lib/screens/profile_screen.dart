@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:suroyapp/screens/application_screen.dart';
 import 'package:suroyapp/screens/home_screen.dart';
+import 'package:suroyapp/screens/listings_screen.dart';
 import 'package:suroyapp/screens/notification_screen.dart';
 import 'package:suroyapp/screens/profile_details.dart';
 
@@ -28,7 +29,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> fetchUserData() async {
     try {
-      // Assume 'users' is the collection and 'userId' is the document ID
       DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
           .instance
           .collection('users')
@@ -168,6 +168,79 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 Text(
                                   "let us do the rest",
+                                  style: GoogleFonts.quicksand(
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Image.asset('assets/images/landingpage.png',
+                                width: 130, height: 130),
+                          )
+                        ]),
+                      ),
+                    ),
+                  ),
+                   const SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Listings()));
+                    },
+                    child: Material(
+                      elevation: 4.0,
+                      borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                        height: 130,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white.withOpacity(0.9),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              )
+                            ]),
+                        child: Row(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, top: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "VIEW VEHICLE LISTINGS",
+                                  style: GoogleFonts.oswald(
+                                    fontSize: 20,
+                                    color: const Color(0xfff004aad),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "View your vehicle listings",
+                                  style: GoogleFonts.quicksand(
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "and manage them",
                                   style: GoogleFonts.quicksand(
                                       fontWeight: FontWeight.w500),
                                 ),
