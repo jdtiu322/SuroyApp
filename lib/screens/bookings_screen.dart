@@ -26,7 +26,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
       userID = user!.uid;
       _userStream = FirebaseFirestore.instance
           .collection('bookings')
-          .where('renterID', isEqualTo: userID )
+          .where('renterID', isEqualTo: userID)
           .snapshots();
     }
   }
@@ -41,13 +41,17 @@ class _BookingsScreenState extends State<BookingsScreen> {
         stream: _userStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Text('Connection error');
+            return Center(child: Text('Connection error'));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text('Waiting for connection');
+            return Center(child: Text('Waiting for connection'));
           }
           var docs = snapshot.data!.docs;
-          return ListView.builder(
+
+          if (docs.length == 0) {
+            return Center(child: Text("No bookings yet huhu, choose ka na po, sana mapili :(("));
+          }else {
+            return ListView.builder(
             itemCount: docs.length,
             itemBuilder: (context, index) {
               DateTime startDate = docs[index]['startDate'].toDate();
@@ -120,17 +124,18 @@ class _BookingsScreenState extends State<BookingsScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(docs[index]['vehicleModel'],
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                  )),
-                                  Text("Pick-Up on " +
-                                      startMonth +
-                                      " " +
-                                      startDate.day.toString(),
                                       style: GoogleFonts.poppins(
                                         fontSize: 12,
-                                        fontWeight: FontWeight.bold
-                                      ),),
+                                      )),
+                                  Text(
+                                    "Pick-Up on " +
+                                        startMonth +
+                                        " " +
+                                        startDate.day.toString(),
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ],
                               ),
                             ),
@@ -147,6 +152,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
               );
             },
           );
+          }
         },
       ),
     );

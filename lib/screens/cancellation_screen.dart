@@ -18,12 +18,13 @@ class _CancellationPageState extends State<CancellationPage> {
   String endMonth = "";
   bool? _changedPlans = false;
   bool? _betterDeal = false;
-  bool? _unforseen = false;
+  bool? _unforeseen = false;
   bool? _flight = false;
   bool? _other = false;
   bool _isFree = false;
   bool _isNotFree = false;
   int dateDifference = 0;
+
   @override
   void initState() {
     super.initState();
@@ -140,6 +141,10 @@ class _CancellationPageState extends State<CancellationPage> {
                         onChanged: (bool? value) {
                           setState(() {
                             _changedPlans = value;
+                            _betterDeal = false;
+                            _unforeseen = false;
+                            _flight = false;
+                            _other = false;
                           });
                         },
                       ),
@@ -153,6 +158,10 @@ class _CancellationPageState extends State<CancellationPage> {
                         onChanged: (bool? value) {
                           setState(() {
                             _betterDeal = value;
+                            _changedPlans = false;
+                            _unforeseen = false;
+                            _flight = false;
+                            _other = false;
                           });
                         },
                       ),
@@ -162,23 +171,14 @@ class _CancellationPageState extends State<CancellationPage> {
                       CheckboxListTile(
                         title: Text("3. Unforeseen Circumstances"),
                         controlAffinity: ListTileControlAffinity.leading,
-                        value: _unforseen,
+                        value: _unforeseen,
                         onChanged: (bool? value) {
                           setState(() {
-                            _unforseen = value;
-                          });
-                        },
-                      ),
-                      Divider(
-                        height: 5,
-                      ),
-                      CheckboxListTile(
-                        title: Text("3. Unforeseen Circumstances"),
-                        controlAffinity: ListTileControlAffinity.leading,
-                        value: _unforseen,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _unforseen = value;
+                            _unforeseen = value;
+                            _changedPlans = false;
+                            _betterDeal = false;
+                            _flight = false;
+                            _other = false;
                           });
                         },
                       ),
@@ -192,6 +192,10 @@ class _CancellationPageState extends State<CancellationPage> {
                         onChanged: (bool? value) {
                           setState(() {
                             _flight = value;
+                            _changedPlans = false;
+                            _betterDeal = false;
+                            _unforeseen = false;
+                            _other = false;
                           });
                         },
                       ),
@@ -205,33 +209,46 @@ class _CancellationPageState extends State<CancellationPage> {
                         onChanged: (bool? value) {
                           setState(() {
                             _other = value;
+                            _changedPlans = false;
+                            _betterDeal = false;
+                            _unforeseen = false;
+                            _flight = false;
                           });
                         },
                       ),
                       Divider(
                         height: 5,
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Visibility(
-                          visible: _isFree,
-                          child: Container(
-                            height: 120,
-                            child: Column(
-                              children: [
-                                Text("Cancellation is Free",
+                        visible: _isFree &&
+                            (_changedPlans == true ||
+                                _betterDeal == true ||
+                                _unforeseen == true ||
+                                _flight == true ||
+                                _other == true),
+                        child: Container(
+                          height: 120,
+                          child: Column(
+                            children: [
+                              Text(
+                                "Cancellation is Free",
                                 style: GoogleFonts.poppins(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                ),),
-                                RichText(text: 
-                                TextSpan(
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
                                   children: [
                                     TextSpan(
                                       text: "Learn more about our",
                                       style: GoogleFonts.poppins(
                                         fontSize: 14,
-                                        color: Colors.black
-                                      )
+                                        color: Colors.black,
+                                      ),
                                     ),
                                     TextSpan(
                                       text: " cancellation policy",
@@ -239,22 +256,24 @@ class _CancellationPageState extends State<CancellationPage> {
                                         fontSize: 12,
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration.underline
+                                        decoration: TextDecoration.underline,
                                       ),
                                     ),
-                                  ]
-                                )
+                                  ],
                                 ),
-                                cancellationButton(context)
-                              ],
-                            )
-                          )),
+                              ),
+                              cancellationButton(context),
+                            ],
+                          ),
+                        ),
+                      ),
                       Visibility(
-                          visible: _isNotFree,
-                          child: Container(
-                            height: 30,
-                            child: Text("test 2"),
-                          )),
+                        visible: _isNotFree,
+                        child: Container(
+                          height: 30,
+                          child: Text("test 2"),
+                        ),
+                      ),
                     ],
                   ),
                 ),

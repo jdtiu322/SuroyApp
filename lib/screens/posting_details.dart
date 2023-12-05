@@ -130,33 +130,26 @@ class _PostingDetailsState extends State<PostingDetails> {
               Padding(
                 padding: EdgeInsets.fromLTRB(
                     20, MediaQuery.of(context).size.height * 0, 20, 0),
-                child: Container(
-                  height: 130,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Colors.grey.shade300),
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Description",
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Description",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        widget.description,
-                        textAlign: TextAlign.justify,
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                    Text(
+                      widget.description,
+                      textAlign: TextAlign.justify,
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                      ),
+                    ),
+                    Divider()
+                  ],
                 ),
               ),
               SizedBox(
@@ -342,6 +335,7 @@ class _PostingDetailsState extends State<PostingDetails> {
                   onTap: () {
                     VehicleInformationWithDate vehicleInformationWithDate =
                         VehicleInformationWithDate(
+                      isAvailable: true,
                       startDate: startDate,
                       endDate: endDate,
                       vehicleDescrition: widget.description,

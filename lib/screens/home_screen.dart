@@ -12,7 +12,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _userStream =
-      FirebaseFirestore.instance.collection('vehicleListings').snapshots();
+      FirebaseFirestore.instance.collection('vehicleListings')
+      .where('isAvailable', isEqualTo: true)
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {

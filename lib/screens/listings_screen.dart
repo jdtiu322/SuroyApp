@@ -30,7 +30,7 @@ class _ListingsState extends State<Listings> {
     });
     _userStream = FirebaseFirestore.instance
         .collection("vehicleListings")
-        .where('hostID', isEqualTo: userID)
+        .where('hostId', isEqualTo: userID,).where('isAvailable', isEqualTo: true)
         .snapshots();
   }
 
@@ -58,16 +58,17 @@ class _ListingsState extends State<Listings> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    BookingInfo listingInfo = BookingInfo(
-                        startDate: DateTime.now(),
-                        endDate: DateTime.now(),
-                        hostName: docs[index]['hostName'],
+                    FinalVehicleInfo listingInfo = FinalVehicleInfo(
+                        isAvailable: docs[index]['isAvailable'],
+                        rentPrice: docs[index]['pricing'],
+                        vehicleDescription: docs[index]['description'],
                         pickUpAddress: docs[index]['renterAddress'],
-                        plateNumber: docs[index]['licensePlateNum'],
-                        transactionAmount: "0",
-                        vehicleModel: docs[index]['vehicleModel'],
                         vehicleType: docs[index]['vehicleType'],
+                        vehicleModel: docs[index]['vehicleModel'],
+                        hostName: docs[index]['hostName'],
+                        numSeats: docs[index]['numSeats'],
                         modelYear: docs[index]['modelYear'],
+                        plateNumber: docs[index]['licensePlateNum'],
                         imageUrl: docs[index]['vehicleImage'],
                         hostAge: docs[index]['hostAge'],
                         hostMobileNumber: docs[index]['hostMobileNumber'],

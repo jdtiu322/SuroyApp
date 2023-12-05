@@ -24,7 +24,7 @@ class _LandingPageState extends State<LandingPage> {
               20, MediaQuery.of(context).size.height * 0, 20, 0),
           child: Column(children: <Widget>[
             const SizedBox(height: 130),
-            logoWidget('assets/images/landingpage.png'),
+          Image.asset('assets/images/landingpage.png', width: 150, height: 150,),
             const SizedBox(height: 10),
             Align(
               child: Text("Rent",

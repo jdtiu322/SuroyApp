@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:suroyapp/screens/starting_page.dart';
 import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
@@ -57,7 +58,6 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                       if (user != null) {
                         String userEmail = user.email ?? 'No email available';
                         String hostAge = user.phoneNumber ?? 'Invalid number';
-                        bool _isAvailable = true;
 
                         DocumentReference vehicleRef = await FirebaseFirestore
                             .instance
@@ -66,7 +66,8 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                           'hostId': user.uid,
                           'email': userEmail,
                           'hostAge': widget.vehicleInfo.hostAge,
-                          'hostMobileNumber': widget.vehicleInfo.hostMobileNumber,
+                          'hostMobileNumber':
+                              widget.vehicleInfo.hostMobileNumber,
                           'hostName': widget.vehicleInfo.hostName,
                           'vehicleType': widget.vehicleInfo.vehicleType,
                           'vehicleModel': widget.vehicleInfo.vehicleModel,
@@ -78,15 +79,31 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                           'renterAddress': widget.vehicleInfo.pickUpAddress,
                           'pricing': strTotalPrice,
                           'timestamp': FieldValue.serverTimestamp(),
-                          'isAvailable': _isAvailable
+                          'isAvailable': false
                         });
 
+                        Fluttertoast.showToast(
+                          msg: "Vehicle registration successful!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                        );
                         print("Registration Successful!");
                       }
                     } catch (error) {
+                      Fluttertoast.showToast(
+                        msg: "Error registering vehicle. Please try again!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                      );
+
                       print("Invalid account details ${error.toString()}");
                     }
                     FinalVehicleInfo finalVehicleInfo = FinalVehicleInfo(
+                      isAvailable: false,
                       rentPrice: rentPrice,
                       vehicleDescription: widget.vehicleInfo.vehicleDescription,
                       pickUpAddress: widget.vehicleInfo.pickUpAddress,
@@ -296,4 +313,3 @@ class _PriceRegistrationState extends State<PriceRegistration> {
     super.dispose();
   }
 }
-

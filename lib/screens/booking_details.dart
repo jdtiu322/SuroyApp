@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
 import 'package:suroyapp/screens/cancellation_screen.dart';
+import 'package:suroyapp/screens/status_screen.dart';
 
 class BookingDetailsScreen extends StatefulWidget {
   final BookingInfo bookingDetails;
@@ -17,7 +20,10 @@ class BookingDetailsScreen extends StatefulWidget {
 
 class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   late String exactAddress;
+  bool _isPickUp = false;
+  bool _canCancel = true;
   String displayAddress = "";
+  String renterID = "";
   late GoogleMapController mapController;
   List<Marker> _markers = [];
 
@@ -29,6 +35,8 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   }
 
   Future<void> _loadDisplayAddress() async {
+    User? user = await FirebaseAuth.instance.currentUser;
+    renterID = user!.uid;
     exactAddress = await getDisplayAddress(widget.bookingDetails.pickUpAddress);
     setState(() {
       displayAddress = exactAddress;
@@ -36,6 +44,10 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   }
 
   Future<void> _updateMapLocation() async {
+    if (DateTime.now() == widget.bookingDetails.endDate) {
+      _isPickUp = true;
+      _canCancel = false;
+    }
     LatLng location =
         await _getLatLngFromAddress(widget.bookingDetails.pickUpAddress);
     mapController.animateCamera(CameraUpdate.newLatLng(location));
@@ -53,53 +65,31 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     });
   }
 
+  Future<void> createRenterStatusDocument() async {
+    try {
+      CollectionReference renterStatusCollection =
+          FirebaseFirestore.instance.collection('renterStatus');
+      await renterStatusCollection.add({
+        'renterID': renterID,
+        'currentAddress': widget.bookingDetails.pickUpAddress,
+        'plateNumber': widget.bookingDetails.plateNumber,
+        'vehicleModel': widget.bookingDetails.vehicleModel,
+        'vehicleType': widget.bookingDetails.vehicleType,
+        'modelYear': widget.bookingDetails.modelYear,
+        'imageUrl': widget.bookingDetails.imageUrl,
+        'hostAge': widget.bookingDetails.hostAge,
+        'hostMobileNumber': widget.bookingDetails.hostMobileNumber,
+        'email': widget.bookingDetails.email,
+      });
+      print('RenterStatus document created successfully.');
+    } catch (e) {
+      print('Error creating RenterStatus document: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-          padding: EdgeInsets.symmetric(horizontal: 70, vertical: 10),
-          height: 70,
-          color: Colors.white,
-          child: ElevatedButton(
-            onPressed: () {
-              BookingInfo bookingInfo = BookingInfo(
-                  startDate: widget.bookingDetails.startDate,
-                  endDate: widget.bookingDetails.endDate,
-                  hostName: widget.bookingDetails.hostName,
-                  pickUpAddress: widget.bookingDetails.pickUpAddress,
-                  plateNumber: widget.bookingDetails.plateNumber,
-                  transactionAmount: widget.bookingDetails.transactionAmount,
-                  vehicleModel: widget.bookingDetails.vehicleModel,
-                  vehicleType: widget.bookingDetails.vehicleType,
-                  modelYear: widget.bookingDetails.modelYear,
-                  imageUrl: widget.bookingDetails.imageUrl,
-                  hostAge: widget.bookingDetails.hostAge,
-                  hostMobileNumber: widget.bookingDetails.hostMobileNumber,
-                  email: widget.bookingDetails.email);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CancellationPage(
-                            bookingInfo: bookingInfo,
-                          )));
-            },
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
-                Color(0xfff004aad),
-              ),
-              // padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-              //   EdgeInsets.symmetric(horizontal: 30)
-              // )
-            ),
-            child: Text(
-              "Cancel Reservation",
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          )),
       appBar: AppBar(),
       body: ListView(
         children: [
@@ -148,7 +138,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
           ),
           Container(
             width: MediaQuery.of(context).size.width,
-            height: 420,
+            height: 550,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
@@ -236,116 +226,181 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                   Divider(
                     height: 5,
                   ),
-                  Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "More About The Host",
+                  Text(
+                    "More About The Host",
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Host Name: ",
+                              style: GoogleFonts.poppins(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            TextSpan(
+                              text: widget.bookingDetails.hostName,
+                              style: GoogleFonts.poppins(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Mobile Number: ",
+                              style: GoogleFonts.poppins(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            TextSpan(
+                              text: widget.bookingDetails.hostMobileNumber,
+                              style: GoogleFonts.poppins(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Email address: ",
+                              style: GoogleFonts.poppins(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            TextSpan(
+                              text: widget.bookingDetails.email,
+                              style: GoogleFonts.poppins(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: Visibility(
+                      visible: _canCancel,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          BookingInfo bookingInfo = BookingInfo(
+                              startDate: widget.bookingDetails.startDate,
+                              endDate: widget.bookingDetails.endDate,
+                              hostName: widget.bookingDetails.hostName,
+                              pickUpAddress: widget.bookingDetails.pickUpAddress,
+                              plateNumber: widget.bookingDetails.plateNumber,
+                              transactionAmount:
+                                  widget.bookingDetails.transactionAmount,
+                              vehicleModel: widget.bookingDetails.vehicleModel,
+                              vehicleType: widget.bookingDetails.vehicleType,
+                              modelYear: widget.bookingDetails.modelYear,
+                              imageUrl: widget.bookingDetails.imageUrl,
+                              hostAge: widget.bookingDetails.hostAge,
+                              hostMobileNumber:
+                                  widget.bookingDetails.hostMobileNumber,
+                              email: widget.bookingDetails.email);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CancellationPage(
+                                        bookingInfo: bookingInfo,
+                                      )));
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            Color(0xfff004aad),
+                          ),
+                        ),
+                        child: Text(
+                          "Cancel Reservation",
                           style: GoogleFonts.poppins(
-                            fontSize: 20,
+                            fontSize: 18,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Column(
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: "Host Name: ",
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.black,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: widget.bookingDetails.hostName,
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.black,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: "Mobile Number: ",
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.black,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: widget
-                                            .bookingDetails.hostMobileNumber,
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.black,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: "Email address: ",
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.black,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: widget.bookingDetails.email,
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.black,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 30),
-                              child: Column(
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/vectors/message-square.svg',
-                                    width: 40,
-                                  ),
-                                  Text(
-                                    "Message the Host",
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        decoration: TextDecoration.underline,
-                                        decorationThickness: 2.0),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
+                  ),
+                  Center(
+                    child: Visibility(
+                      visible: true,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          RenterStatus renterStatus = RenterStatus(
+                              renterID: renterID,
+                              currentAddress: widget.bookingDetails.pickUpAddress,
+                              startDate: widget.bookingDetails.startDate,
+                              endDate: widget.bookingDetails.endDate,
+                              hostName: widget.bookingDetails.hostName,
+                              pickUpAddress: widget.bookingDetails.pickUpAddress,
+                              plateNumber: widget.bookingDetails.plateNumber,
+                              transactionAmount:
+                                  widget.bookingDetails.transactionAmount,
+                              vehicleModel: widget.bookingDetails.vehicleModel,
+                              vehicleType: widget.bookingDetails.vehicleType,
+                              modelYear: widget.bookingDetails.modelYear,
+                              imageUrl: widget.bookingDetails.imageUrl,
+                              hostAge: widget.bookingDetails.hostAge,
+                              hostMobileNumber:
+                                  widget.bookingDetails.hostMobileNumber,
+                              email: widget.bookingDetails.email);
+                          createRenterStatusDocument();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StatusScreen(
+                                        renterStatus: renterStatus,
+                                      )));
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            Color(0xfff004aad),
+                          ),
+                        ),
+                        child: Text(
+                          "Pick-Up Vehicle",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                 ],
               ),

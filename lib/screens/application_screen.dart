@@ -1,19 +1,11 @@
-import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/reusable_widgets/user_image.dart';
 import 'package:suroyapp/screens/address_screen.dart';
-import 'package:suroyapp/screens/home_screen.dart';
-import 'package:suroyapp/screens/starting_page.dart';
 import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
-import 'package:suroyapp/utils/color_utils.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:suroyapp/screens/signup_screen.dart';
 
 class Application extends StatefulWidget {
   const Application({super.key});
@@ -168,7 +160,7 @@ class _ApplicationState extends State<Application> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 UserImage(onFileChanged: ((imageUrl) {
@@ -181,7 +173,7 @@ class _ApplicationState extends State<Application> {
                     VehicleInformation1 vehicleInfo = VehicleInformation1(
                       vehicleType: selectedVehicle ?? "",
                       vehicleModel: vehicleModel.text,
-                      hostName: firstName + " " + lastName,
+                      hostName: "$firstName $lastName",
                       numSeats: numSeats.text,
                       modelYear: modelYear.text,
                       plateNumber: plateNumber.text,
@@ -199,7 +191,7 @@ class _ApplicationState extends State<Application> {
                       ),
                     );
                   },
-                  child: Text("Continue"),
+                  child: const Text("Continue"),
                 )
               ],
             ),

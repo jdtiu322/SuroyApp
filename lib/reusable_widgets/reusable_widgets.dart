@@ -5,6 +5,7 @@ import 'package:geocoder2/geocoder2.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:suroyapp/screens/bookings_screen.dart';
+import 'package:suroyapp/screens/listings_screen.dart';
 
 Image logoWidget(String imageName) {
   return Image.asset(imageName, fit: BoxFit.fitWidth, width: 600);
@@ -188,6 +189,44 @@ ElevatedButton cancellationButton(BuildContext context) {
       },
       child: Text(
         "Confirm Cancellation",
+        style: GoogleFonts.poppins(
+            fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+      ));
+}
+
+ ElevatedButton removeListingButton(BuildContext context) {
+  return ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(
+        Color(0xfff004aad),
+      )),
+      onPressed: () async {
+        try {
+          User? user = FirebaseAuth.instance.currentUser;
+          String hostID = "";
+          if (user != null) {
+            hostID = user.uid;
+
+            CollectionReference vehicleListings =
+                FirebaseFirestore.instance.collection('vehicleListings');
+
+            QuerySnapshot chuGwapo =
+                await vehicleListings.where('hostID', isEqualTo: hostID).get();
+
+            DocumentSnapshot chuCutie = chuGwapo.docs.first;
+
+            String copyHostID = chuCutie.id;
+
+            await vehicleListings.doc(copyHostID).delete();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Listings()));
+
+          }
+        } catch (error) {
+          print("Error: $error");
+        }
+      },
+      child: Text(
+        "Confirm Listing Removal",
         style: GoogleFonts.poppins(
             fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
       ));

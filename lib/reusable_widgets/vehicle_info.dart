@@ -85,8 +85,10 @@ class VehicleInformation3 extends VehicleInformation2 {
 
 class FinalVehicleInfo extends VehicleInformation3 {
   final String rentPrice;
+  final bool isAvailable;
 
   FinalVehicleInfo({
+    required this.isAvailable,
     required this.rentPrice,
     required String vehicleDescription,
     required String pickUpAddress,
@@ -122,6 +124,7 @@ class VehicleInformationWithDate extends FinalVehicleInfo {
   VehicleInformationWithDate({
     required this.startDate,
     required this.endDate,
+    required bool isAvailable,
     required String rentPrice,
     required String vehicleDescrition,
     required String pickUpAddress,
@@ -136,6 +139,7 @@ class VehicleInformationWithDate extends FinalVehicleInfo {
     required String hostMobileNumber,
     required String email,
   }) : super(
+            isAvailable: isAvailable,
             rentPrice: rentPrice,
             vehicleDescription: vehicleDescrition,
             pickUpAddress: pickUpAddress,
@@ -181,4 +185,40 @@ class BookingInfo {
     required this.hostMobileNumber,
     required this.email,
   });
+}
+
+class RenterStatus extends BookingInfo {
+  final String renterID;
+  final String currentAddress;
+
+  RenterStatus({
+    required this.renterID,
+    required this.currentAddress,
+    required DateTime startDate,
+    required DateTime endDate,
+    required String hostName,
+    required String pickUpAddress,
+    required String plateNumber,
+    required String transactionAmount,
+    required String vehicleModel,
+    required String vehicleType,
+    required String modelYear,
+    required String imageUrl,
+    required String hostAge,
+    required String hostMobileNumber,
+    required String email,
+  }) : super(
+    startDate: startDate, 
+  endDate: endDate,
+  hostName: hostName,
+  pickUpAddress: pickUpAddress,
+  plateNumber: plateNumber,
+  transactionAmount: transactionAmount,
+  vehicleModel: vehicleModel,
+  vehicleType: vehicleType,
+  modelYear: modelYear,
+  imageUrl: imageUrl,
+  hostAge: hostAge,
+  hostMobileNumber:hostMobileNumber, 
+  email: email);
 }
