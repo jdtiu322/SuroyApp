@@ -1,0 +1,200 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geocoder2/geocoder2.dart';
+import 'package:latlong2/latlong.dart';
+
+class CarownerWidget extends StatelessWidget {
+  const CarownerWidget({super.key});
+
+  Widget carownerData(int? flex, Widget widget) {
+    return Expanded(
+      flex: flex!,
+      child: Padding(
+        padding: const EdgeInsets.all(3.0),
+        child: Container(
+          height: 50,
+          decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: widget,
+          ),
+        ),
+      ),
+    );
+  }
+
+  LatLng convertStringToLatLng(String latLngString) {
+  String cleanedString =
+      latLngString.replaceAll('LatLng(', '').replaceAll(')', '');
+  List<String> latLngParts = cleanedString.split(',');
+
+  if (latLngParts.length == 2) {
+    double latitude = double.parse(latLngParts[0].trim());
+    double longitude = double.parse(latLngParts[1].trim());
+
+    return LatLng(latitude, longitude);
+  } else {
+    throw FormatException('Invalid LatLng string format');
+  }
+}
+
+Future<String> getAddressFrom(LatLng location) async {
+  GeoData data = await Geocoder2.getDataFromCoordinates(
+    latitude: location.latitude,
+    longitude: location.longitude,
+    googleMapApiKey: "AIzaSyANSqv9C0InmgUe-druqtq_qfD1rKPRZHc",
+  );
+  if (data != null) {
+    return data.address;
+  } else {
+    return "No address found";
+  }
+}
+
+Future<String> getDisplayAddress(String coordinates) async {
+  LatLng latLngAddress = convertStringToLatLng(coordinates);
+  String address = await getAddressFrom(latLngAddress);
+
+  return address;
+}
+
+void showImageDialog(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            width: 700,
+            child: Image.network(imageUrl, fit: BoxFit.cover),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget carownerStatus(bool isAvailable) {
+    return Text(
+      isAvailable ? 'Available' : 'Booked',
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: isAvailable ? Colors.green : Colors.red,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Stream<QuerySnapshot> _carownersStream = FirebaseFirestore.instance
+        .collection('vehicleListings')
+        .snapshots();
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: _carownersStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Something went wrong');
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading");
+        }
+
+        return ListView.builder(
+            shrinkWrap: true,
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              final carownerUserdata = snapshot.data!.docs[index];
+              final docId = carownerUserdata.id; // Accessing document ID here
+
+              return FutureBuilder<String>(
+              future: getDisplayAddress(carownerUserdata['renterAddress']),
+              builder: (context, addressSnapshot) {
+                  if (addressSnapshot.connectionState == ConnectionState.waiting) {
+                    return Text("Loading address...");
+                  }
+
+                  return Container(
+                    child: Row(
+                      children: [
+                        carownerData(
+                      1,
+                      GestureDetector(
+                        onTap: () => showImageDialog(context, carownerUserdata['vehicleImage']),
+                        child: Container(
+                          height: 30,
+                          width: 30,
+                          child: Image.network(carownerUserdata['vehicleImage']),
+                        ),
+                      ),
+                    ),
+                        carownerData(
+                          1,
+                          Text(
+                            carownerUserdata['hostId'],
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        carownerData(
+                          1,
+                          Text(
+                            carownerUserdata['vehicleModel'],
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        carownerData(
+                          1,
+                          Text(
+                            carownerUserdata['vehicleType'],
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        carownerData(
+                        2,
+                        Text(
+                          addressSnapshot.data ?? 'Unknown Address', // Display the converted address
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                        carownerData(
+                          1,
+                          Text(
+                            carownerUserdata['licensePlateNum'],
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        carownerData(
+                    1,
+                    carownerStatus(carownerUserdata['isAvailable']),
+                  ),
+                        carownerData(
+                          1,
+                          carownerUserdata['isAvailable'] == false
+                              ? ElevatedButton(
+                                  onPressed: () async {
+                                    await _firestore
+                                        .collection('vehicleListings')
+                                        .doc(docId)
+                                        .update({'isAvailable': true});
+                                  },
+                                  child: Text('Approved'))
+                              : ElevatedButton(
+                                  onPressed: () async {
+                                    await _firestore
+                                        .collection('vehicleListings')
+                                        .doc(docId)
+                                        .update({'isAvailable': false});
+                                  },
+                                  child: Text('Reject')),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            });
+      },
+    );
+  }
+}

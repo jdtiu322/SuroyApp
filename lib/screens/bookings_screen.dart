@@ -74,6 +74,8 @@ class _BookingsScreenState extends State<BookingsScreen> {
                     hostAge: docs[index]['hostAge'],
                     hostMobileNumber: docs[index]['hostMobileNumber'],
                     email: docs[index]['email'],
+                    isNotPickedUp: docs[index]['isNotPickedUp'],
+                    isPickedUp: docs[index]['isPickedUp']
                   );
                   Navigator.push(
                     context,

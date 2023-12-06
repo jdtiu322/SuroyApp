@@ -79,7 +79,8 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                           'renterAddress': widget.vehicleInfo.pickUpAddress,
                           'pricing': strTotalPrice,
                           'timestamp': FieldValue.serverTimestamp(),
-                          'isAvailable': false
+                          'isAvailable': false,
+                          'bookingStatus': "Available",
                         });
 
                         Fluttertoast.showToast(

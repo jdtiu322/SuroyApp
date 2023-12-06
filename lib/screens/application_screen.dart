@@ -50,7 +50,7 @@ class _ApplicationState extends State<Application> {
 
   Future<void> fetchUserData() async {
     try {
-      // Assume 'users' is the collection and 'userId' is the document ID
+
       DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
           .instance
           .collection('users')

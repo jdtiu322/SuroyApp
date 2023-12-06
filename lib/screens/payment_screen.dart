@@ -94,8 +94,30 @@ class _PaymentPageState extends State<PaymentPage> {
                   'hostAge': widget.vehicleInfo.hostAge,
                   'hostMobileNumber': widget.vehicleInfo.hostMobileNumber,
                   'email': widget.vehicleInfo.email,
+                  'isNotPickedUp': true,
+                  'isPickedUp': false,
                 });
-                _updateVehicleAvailability();
+
+
+                    CollectionReference vehicleListings =
+                        FirebaseFirestore.instance.collection('vehicleListings');
+
+                    QuerySnapshot baliknapls = await vehicleListings
+                        .where('licensePlateNum',
+                            isEqualTo: widget.vehicleInfo.plateNumber)
+                        .get();
+                    DocumentSnapshot huhuplsna = baliknapls.docs.first;
+
+                    String vehicleListingDocsID = huhuplsna.id;
+
+                    await vehicleListings.doc(vehicleListingDocsID).update({
+                      'isAvailable': false,
+                    });
+
+                    await vehicleListings.doc(vehicleListingDocsID).update({
+                      'bookingStatus': "Booked",
+                    });
+
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => BookingsScreen()));
               }
@@ -112,22 +134,6 @@ class _PaymentPageState extends State<PaymentPage> {
     });
   }
 
-  void _updateVehicleAvailability() async {
-    try {
-      await FirebaseFirestore.instance
-          .collection('vehicleListings')
-          .where('plateNumber', isEqualTo: widget.vehicleInfo.plateNumber)
-          .get()
-          .then((querySnapshot) {
-        querySnapshot.docs.forEach((doc) async {
-          await doc.reference.update({'isAvailable': false});
-        });
-      });
-    } catch (error) {
-      print('Error updating vehicle availability: $error');
-      // Handle the error as needed
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

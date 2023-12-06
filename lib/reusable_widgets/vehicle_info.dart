@@ -169,6 +169,10 @@ class BookingInfo {
   final String hostAge;
   final String hostMobileNumber;
   final String email;
+  final bool isPickedUp;
+  final bool isNotPickedUp;
+
+
 
   BookingInfo({
     required this.startDate,
@@ -184,6 +188,8 @@ class BookingInfo {
     required this.hostAge,
     required this.hostMobileNumber,
     required this.email,
+    required this.isPickedUp,
+    required this.isNotPickedUp,
   });
 }
 
@@ -208,17 +214,20 @@ class RenterStatus extends BookingInfo {
     required String hostMobileNumber,
     required String email,
   }) : super(
-    startDate: startDate, 
-  endDate: endDate,
-  hostName: hostName,
-  pickUpAddress: pickUpAddress,
-  plateNumber: plateNumber,
-  transactionAmount: transactionAmount,
-  vehicleModel: vehicleModel,
-  vehicleType: vehicleType,
-  modelYear: modelYear,
-  imageUrl: imageUrl,
-  hostAge: hostAge,
-  hostMobileNumber:hostMobileNumber, 
-  email: email);
+            startDate: startDate,
+            endDate: endDate,
+            hostName: hostName,
+            pickUpAddress: pickUpAddress,
+            plateNumber: plateNumber,
+            transactionAmount: transactionAmount,
+            vehicleModel: vehicleModel,
+            vehicleType: vehicleType,
+            modelYear: modelYear,
+            imageUrl: imageUrl,
+            hostAge: hostAge,
+            hostMobileNumber: hostMobileNumber,
+            email: email,
+            isNotPickedUp: true,
+            isPickedUp: false
+            );
 }
