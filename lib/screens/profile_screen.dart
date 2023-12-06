@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:suroyapp/screens/application_screen.dart';
+import 'package:suroyapp/screens/complaints.dart';
 import 'package:suroyapp/screens/home_screen.dart';
 import 'package:suroyapp/screens/listings_screen.dart';
 import 'package:suroyapp/screens/notification_screen.dart';
@@ -247,18 +248,86 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ],
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Image.asset('assets/images/vehicle-listing.png',
+                                width: 130),
+                          )
+                        ]),
+                      ),
+                    ),
+                  ),
+                    SizedBox(height: 20,),
+                                    GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Complaints()));
+                    },
+                    child: Material(
+                      elevation: 4.0,
+                      borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                        height: 130,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white.withOpacity(0.9),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              )
+                            ]),
+                        child: Row(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, top: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "REVIEW COMPLAINTS",
+                                  style: GoogleFonts.oswald(
+                                    fontSize: 20,
+                                    color: const Color(0xfff004aad),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "View your complaints",
+                                  style: GoogleFonts.quicksand(
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "and see their status",
+                                  style: GoogleFonts.quicksand(
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          ),
                           const SizedBox(
                             width: 15,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
-                            child: Image.asset('assets/images/landingpage.png',
-                                width: 130, height: 130),
+                            child: Image.asset('assets/images/vehicle-listing.png',
+                                width: 130),
                           )
                         ]),
                       ),
                     ),
-                  )
+                  ),
                 ],
               )),
         ),
