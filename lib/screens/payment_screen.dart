@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:pay/pay.dart';
 import 'package:suroyapp/payment_configurations.dart';
 import 'package:suroyapp/screens/bookings_screen.dart';
-import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
+import 'package:suroyapp/models/vehicle_info.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -88,7 +88,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   'vehicleType': widget.vehicleInfo.vehicleType,
                   'vehicleModel': widget.vehicleInfo.vehicleModel,
                   'plateNumber': widget.vehicleInfo.plateNumber,
-                  'imageUrl': widget.vehicleInfo.imageUrl,
+                  'imageUrl': widget.vehicleInfo.vehicleImageUrl,
                   'hostName': widget.vehicleInfo.hostName,
                   'modelYear': widget.vehicleInfo.modelYear,
                   'hostAge': widget.vehicleInfo.hostAge,
@@ -118,7 +118,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       'bookingStatus': "Booked",
                     });
 
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => BookingsScreen()));
               }
             } catch (error) {
@@ -159,7 +159,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Image.network(
-                          widget.vehicleInfo.imageUrl,
+                          widget.vehicleInfo.vehicleImageUrl,
                           width: 150,
                         ),
                       ),

@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
-import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
+import 'package:suroyapp/models/vehicle_info.dart';
 import 'package:suroyapp/screens/cancellation_screen.dart';
 import 'package:suroyapp/screens/complaints_screen.dart';
 import 'package:suroyapp/screens/starting_page.dart';
@@ -386,9 +386,13 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
 
                   String copyHostID = chuCutie.id;
 
-                  await vehicleListings.doc(copyHostID).update({'isAvailable': true});
+                  await vehicleListings
+                      .doc(copyHostID)
+                      .update({'isAvailable': true});
 
-                  await vehicleListings.doc(copyHostID).update({'bookingStatus': "Available"});
+                  await vehicleListings
+                      .doc(copyHostID)
+                      .update({'bookingStatus': "Available"});
 
                   _showReviewDialog();
                 },
@@ -628,6 +632,24 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                 visible: canPickUp,
                 child: ElevatedButton(
                   onPressed: () async {
+                    BookingInfo bookingDetails = BookingInfo(
+                      startDate: widget.bookingDetails.startDate,
+                      endDate: widget.bookingDetails.endDate,
+                      hostName: widget.bookingDetails.hostName,
+                      pickUpAddress: widget.bookingDetails.pickUpAddress,
+                      plateNumber: widget.bookingDetails.plateNumber,
+                      transactionAmount:
+                          widget.bookingDetails.transactionAmount,
+                      vehicleModel: widget.bookingDetails.vehicleModel,
+                      vehicleType: widget.bookingDetails.vehicleType,
+                      modelYear: widget.bookingDetails.modelYear,
+                      imageUrl: widget.bookingDetails.imageUrl,
+                      hostAge: widget.bookingDetails.hostAge,
+                      hostMobileNumber: widget.bookingDetails.hostMobileNumber,
+                      email: widget.bookingDetails.email,
+                      isNotPickedUp: _notPickedUp,
+                      isPickedUp: _pickedUp,
+                    );
                     User? user = FirebaseAuth.instance.currentUser;
                     String renterID = user!.uid;
 
@@ -657,40 +679,41 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: Text(
-                            'Complaint Submitted',
+                            'Vehicle Picked-Up',
                             style: TextStyle(
                               color: Colors.blue,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          content: Column(
-                            children: [
-                              Image.asset(
-                                'assets/images/success_image.png',
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.contain,
-                              ),
-                              SizedBox(height: 5), // Adjusted height
-                              Text(
-                                'Vehicle has been Picked-Up! Enjoy your trip!',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                            ],
+                          content: Text(
+                            'Vehicle has been Picked-Up! Enjoy your trip!',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
                           ),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text(
-                                'OK',
-                                style: TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              BookingDetailsScreen(
+                                                  bookingDetails:
+                                                      bookingDetails)));
+                                },
+                                child: Text(
+                                  'OK',
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),

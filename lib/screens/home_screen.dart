@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:suroyapp/screens/posting_details.dart';
@@ -11,10 +12,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _userStream =
-      FirebaseFirestore.instance.collection('vehicleListings')
+      
+  User? user = FirebaseAuth.instance.currentUser;
+  late String userID;
+  late Stream<QuerySnapshot> _userStream;
+
+  @override
+  void initState() {
+    super.initState();
+    if (user != null) {
+      userID = user!.uid;
+      _userStream = FirebaseFirestore.instance.collection('vehicleListings')
       .where('isAvailable', isEqualTo: true)
       .snapshots();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +67,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 hostAge: docs[index]['hostAge'],
                                 hostMobileNumber: docs[index]['hostMobileNumber'],
                                 email: docs[index]['email'],
+                                hostId: docs[index]['hostId'],
+                                bookingStatus: docs[index]['bookingStatus'],
+                                vehicleImageUrl: docs[index]['vehicleImage'],
+                                certificateImageUrl: docs[index]['certificateImage'],
+                             
                                 
                               )));
                 },

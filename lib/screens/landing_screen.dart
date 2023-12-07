@@ -70,7 +70,7 @@ class _LandingPageState extends State<LandingPage> {
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const SignInScreen()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignInScreen()));
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith((states) {

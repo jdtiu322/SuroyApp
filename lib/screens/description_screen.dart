@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:suroyapp/screens/pricing_screen.dart';
-import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
+import 'package:suroyapp/models/vehicle_info.dart';
 
 class DescriptionRegistration extends StatefulWidget {
   final VehicleInformation2 vehicleInfo;
@@ -78,7 +78,8 @@ class _DescriptionRegistrationState extends State<DescriptionRegistration> {
                       numSeats: widget.vehicleInfo.numSeats,
                       modelYear: widget.vehicleInfo.modelYear,
                       plateNumber: widget.vehicleInfo.plateNumber,
-                      imageUrl: widget.vehicleInfo.imageUrl,
+                      vehicleImageUrl: widget.vehicleInfo.vehicleImageUrl,
+                      certificateImageUrl: widget.vehicleInfo.certificateImageurl,
                       hostAge: widget.vehicleInfo.hostAge,
                       hostMobileNumber: widget.vehicleInfo.hostMobileNumber,
                       email: widget.vehicleInfo.email,

@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
+import 'package:suroyapp/models/vehicle_info.dart';
 import 'package:suroyapp/screens/booking_details.dart';
 
 class BookingsScreen extends StatefulWidget {

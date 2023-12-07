@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:suroyapp/screens/listings_screen.dart';
 import 'package:suroyapp/screens/starting_page.dart';
-import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
+import 'package:suroyapp/models/vehicle_info.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -73,7 +74,8 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                           'vehicleModel': widget.vehicleInfo.vehicleModel,
                           'modelYear': widget.vehicleInfo.modelYear,
                           'licensePlateNum': widget.vehicleInfo.plateNumber,
-                          'vehicleImage': widget.vehicleInfo.imageUrl,
+                          'vehicleImage': widget.vehicleInfo.vehicleImageUrl,
+                          'certificateImage': widget.vehicleInfo.certificateImageurl,
                           'numSeats': widget.vehicleInfo.numSeats,
                           'description': widget.vehicleInfo.vehicleDescription,
                           'renterAddress': widget.vehicleInfo.pickUpAddress,
@@ -84,7 +86,7 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                         });
 
                         Fluttertoast.showToast(
-                          msg: "Vehicle registration successful!",
+                          msg: "Application submitted. Check your email for confirmation!",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           backgroundColor: Colors.green,
@@ -106,6 +108,7 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                     FinalVehicleInfo finalVehicleInfo = FinalVehicleInfo(
                       isAvailable: false,
                       rentPrice: rentPrice,
+                      bookingStatus: "Available",
                       vehicleDescription: widget.vehicleInfo.vehicleDescription,
                       pickUpAddress: widget.vehicleInfo.pickUpAddress,
                       vehicleType: widget.vehicleInfo.vehicleType,
@@ -114,15 +117,16 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                       numSeats: widget.vehicleInfo.numSeats,
                       modelYear: widget.vehicleInfo.modelYear,
                       plateNumber: widget.vehicleInfo.plateNumber,
-                      imageUrl: widget.vehicleInfo.plateNumber,
+                      vehicleImageUrl: widget.vehicleInfo.vehicleImageUrl,
+                      certificateImageUrl: widget.vehicleInfo.certificateImageurl,
                       hostAge: widget.vehicleInfo.hostAge,
                       hostMobileNumber: widget.vehicleInfo.hostMobileNumber,
                       email: widget.vehicleInfo.email,
                     );
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => StartingPage(),
+                        builder: (context) => Listings(),
                       ),
                     );
                   },
@@ -196,7 +200,7 @@ class _PriceRegistrationState extends State<PriceRegistration> {
                 onChanged: (value) {
                   // Format the input with a peso sign
                   double numericPrice = double.tryParse(value) ?? 0;
-                  guestFee = (numericPrice * 0.15).toDouble();
+                  guestFee = (numericPrice * 0.05).toDouble();
                   totalPrice = (numericPrice + guestFee).toDouble();
                   price.text = 'P' + '$value';
                   // Rebuild the widget to update the label text visibility

@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/reusable_widgets/user_image.dart';
-import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
+import 'package:suroyapp/models/vehicle_info.dart';
 import 'package:suroyapp/screens/status_screen.dart';
 
 class ComplaintsScreen extends StatefulWidget {
@@ -259,8 +259,10 @@ class _ComplaintsScreenState extends State<ComplaintsScreen> {
                             'hostName': widget.complaintDetails.hostName,
                             'hostEmail': widget.complaintDetails.email,
                             'complaintCategory': complaintCategory,
-                            'description': description
-                                .text, // Use description.text instead of description
+                            'description': description.text,
+                            'vehicleModel': widget.complaintDetails.vehicleModel,
+                            'plateNumber': widget.complaintDetails.vehicleModel,
+                                 // Use description.text instead of description
                             'imageUrl': imageUrl,
                             'complaintStatus': "Filed"
                           });

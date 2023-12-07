@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/reusable_widgets/user_image.dart';
 import 'package:suroyapp/screens/address_screen.dart';
-import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
+import 'package:suroyapp/models/vehicle_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Application extends StatefulWidget {
@@ -34,7 +34,8 @@ class _ApplicationState extends State<Application> {
 
   String? selectedVehicle = "";
 
-  String imageUrl = '';
+  String vehicleImageUrl = '';
+  String certificateImageUrl = '';
 
   final user = FirebaseAuth.instance.currentUser!;
   late String firstName = "";
@@ -50,7 +51,6 @@ class _ApplicationState extends State<Application> {
 
   Future<void> fetchUserData() async {
     try {
-
       DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
           .instance
           .collection('users')
@@ -165,7 +165,25 @@ class _ApplicationState extends State<Application> {
                 ),
                 UserImage(onFileChanged: ((imageUrl) {
                   setState(() {
-                    this.imageUrl = imageUrl;
+                    this.vehicleImageUrl = imageUrl;
+                  });
+                })),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    "Add image of your certificate of registration",
+                    style: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                UserImage(onFileChanged: ((imageUrl) {
+                  setState(() {
+                    this.certificateImageUrl = imageUrl;
                   });
                 })),
                 ElevatedButton(
@@ -177,7 +195,8 @@ class _ApplicationState extends State<Application> {
                       numSeats: numSeats.text,
                       modelYear: modelYear.text,
                       plateNumber: plateNumber.text,
-                      imageUrl: imageUrl,
+                      vehicleImageUrl: vehicleImageUrl,
+                      certificateImageurl: certificateImageUrl,
                       hostAge: age,
                       hostMobileNumber: phoneNumber,
                       email: email,

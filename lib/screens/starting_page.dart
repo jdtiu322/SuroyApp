@@ -26,8 +26,7 @@ class _StartingPageState extends State<StartingPage> {
     const HomeScreen(),
     const WishlistScreen(),
     const BookingsScreen(),
-    const MessageScreen(),
-    const ProfileScreen(),
+     const ProfileScreen(),
   ];
 
   @override
@@ -59,11 +58,7 @@ class _StartingPageState extends State<StartingPage> {
             ),
             label: 'Bookings',
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/vectors/message.svg'),
-            label: 'Messages',
-          ),
-          BottomNavigationBarItem(
+         BottomNavigationBarItem(
             icon: SvgPicture.asset('assets/vectors/profile.svg'),
             label: 'Profile',
           ),

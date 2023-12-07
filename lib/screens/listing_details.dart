@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
-import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
+import 'package:suroyapp/models/vehicle_info.dart';
 import 'package:suroyapp/screens/listing_removal_screen.dart';
 import 'package:suroyapp/screens/location_tracking_screen.dart';
 
@@ -30,17 +30,15 @@ class _ListingDetailsState extends State<ListingDetails> {
   Future<void> initialize() async {
     String address = await getDisplayAddress(widget.listingInfo.pickUpAddress);
     String bookingStatus = "";
-    if (widget.listingInfo.isAvailable == true) {
-      bookingStatus = "Booked";
+    if (widget.listingInfo.bookingStatus == "Booked") {
       notAvailable = true;
-    } else if (widget.listingInfo.isAvailable == false) {
-      bookingStatus = "Available";
+    } else if (widget.listingInfo.bookingStatus == "Available") {
       available = true;
     }
 
     setState(() {
       displayAddress = address;
-      displayBookingStatus = bookingStatus;
+      displayBookingStatus = widget.listingInfo.bookingStatus;
     });
   }
 
@@ -62,7 +60,7 @@ class _ListingDetailsState extends State<ListingDetails> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: Image.network(
-                    widget.listingInfo.imageUrl,
+                    widget.listingInfo.vehicleImageUrl,
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -192,6 +190,7 @@ class _ListingDetailsState extends State<ListingDetails> {
                         FinalVehicleInfo listingInfo = FinalVehicleInfo(
                             isAvailable: widget.listingInfo.isAvailable,
                             rentPrice: widget.listingInfo.rentPrice,
+                            bookingStatus: widget.listingInfo.bookingStatus,
                             vehicleDescription:
                                 widget.listingInfo.vehicleDescription,
                             pickUpAddress: widget.listingInfo.pickUpAddress,
@@ -201,7 +200,8 @@ class _ListingDetailsState extends State<ListingDetails> {
                             numSeats: widget.listingInfo.numSeats,
                             modelYear: widget.listingInfo.modelYear,
                             plateNumber: widget.listingInfo.plateNumber,
-                            imageUrl: widget.listingInfo.imageUrl,
+                            vehicleImageUrl: widget.listingInfo.vehicleImageUrl,
+                            certificateImageUrl: "",
                             hostAge: widget.listingInfo.hostAge,
                             hostMobileNumber:
                                 widget.listingInfo.hostMobileNumber,
@@ -217,7 +217,7 @@ class _ListingDetailsState extends State<ListingDetails> {
                             fontSize: 12,
                             color: Colors.white,
                           )),
-                    ))
+                    )),             
               ],
             ),
           ),

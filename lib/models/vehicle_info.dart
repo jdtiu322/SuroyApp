@@ -5,7 +5,8 @@ class VehicleInformation1 {
   final String numSeats;
   final String modelYear;
   final String plateNumber;
-  final String imageUrl;
+  final String vehicleImageUrl;
+  final String certificateImageurl;
   final String hostAge;
   final String hostMobileNumber;
   final String email;
@@ -17,7 +18,8 @@ class VehicleInformation1 {
     required this.numSeats,
     required this.modelYear,
     required this.plateNumber,
-    required this.imageUrl,
+    required this.vehicleImageUrl,
+    required this.certificateImageurl,
     required this.hostAge,
     required this.hostMobileNumber,
     required this.email,
@@ -35,7 +37,8 @@ class VehicleInformation2 extends VehicleInformation1 {
     required String numSeats,
     required String modelYear,
     required String plateNumber,
-    required String imageUrl,
+    required String vehicleImageUrl,
+    required String certificateImageUrl,
     required String hostAge,
     required String hostMobileNumber,
     required String email,
@@ -46,7 +49,8 @@ class VehicleInformation2 extends VehicleInformation1 {
           numSeats: numSeats,
           modelYear: modelYear,
           plateNumber: plateNumber,
-          imageUrl: imageUrl,
+          vehicleImageUrl: vehicleImageUrl,
+          certificateImageurl: certificateImageUrl,
           hostAge: hostAge,
           hostMobileNumber: hostMobileNumber,
           email: email,
@@ -65,7 +69,8 @@ class VehicleInformation3 extends VehicleInformation2 {
     required String numSeats,
     required String modelYear,
     required String plateNumber,
-    required String imageUrl,
+    required String vehicleImageUrl,
+    required String certificateImageUrl,
     required String hostAge,
     required String hostMobileNumber,
     required String email,
@@ -77,7 +82,8 @@ class VehicleInformation3 extends VehicleInformation2 {
             numSeats: numSeats,
             modelYear: modelYear,
             plateNumber: plateNumber,
-            imageUrl: imageUrl,
+            vehicleImageUrl: vehicleImageUrl,
+            certificateImageUrl: certificateImageUrl,
             hostAge: hostAge,
             hostMobileNumber: hostMobileNumber,
             email: email);
@@ -86,10 +92,12 @@ class VehicleInformation3 extends VehicleInformation2 {
 class FinalVehicleInfo extends VehicleInformation3 {
   final String rentPrice;
   final bool isAvailable;
+  final String bookingStatus;
 
   FinalVehicleInfo({
     required this.isAvailable,
     required this.rentPrice,
+    required this.bookingStatus,
     required String vehicleDescription,
     required String pickUpAddress,
     required String vehicleType,
@@ -98,7 +106,8 @@ class FinalVehicleInfo extends VehicleInformation3 {
     required String numSeats,
     required String modelYear,
     required String plateNumber,
-    required String imageUrl,
+        required String vehicleImageUrl,
+    required String certificateImageUrl,
     required String hostAge,
     required String hostMobileNumber,
     required String email,
@@ -111,7 +120,8 @@ class FinalVehicleInfo extends VehicleInformation3 {
             numSeats: numSeats,
             modelYear: modelYear,
             plateNumber: plateNumber,
-            imageUrl: imageUrl,
+            vehicleImageUrl: vehicleImageUrl,
+            certificateImageUrl: certificateImageUrl,
             hostAge: hostAge,
             hostMobileNumber: hostMobileNumber,
             email: email);
@@ -126,6 +136,7 @@ class VehicleInformationWithDate extends FinalVehicleInfo {
     required this.endDate,
     required bool isAvailable,
     required String rentPrice,
+    required String bookingStatus,
     required String vehicleDescrition,
     required String pickUpAddress,
     required String vehicleType,
@@ -134,13 +145,15 @@ class VehicleInformationWithDate extends FinalVehicleInfo {
     required String numSeats,
     required String modelYear,
     required String plateNumber,
-    required String imageUrl,
+    required String vehicleImageUrl,
+    required String certificateImageUrl,
     required String hostAge,
     required String hostMobileNumber,
     required String email,
   }) : super(
             isAvailable: isAvailable,
             rentPrice: rentPrice,
+            bookingStatus: bookingStatus,
             vehicleDescription: vehicleDescrition,
             pickUpAddress: pickUpAddress,
             vehicleType: vehicleType,
@@ -149,7 +162,8 @@ class VehicleInformationWithDate extends FinalVehicleInfo {
             numSeats: numSeats,
             modelYear: modelYear,
             plateNumber: plateNumber,
-            imageUrl: imageUrl,
+            vehicleImageUrl: vehicleImageUrl,
+            certificateImageUrl: certificateImageUrl,
             hostAge: hostAge,
             hostMobileNumber: hostMobileNumber,
             email: email);
@@ -171,8 +185,6 @@ class BookingInfo {
   final String email;
   final bool isPickedUp;
   final bool isNotPickedUp;
-
-
 
   BookingInfo({
     required this.startDate,
@@ -228,6 +240,5 @@ class RenterStatus extends BookingInfo {
             hostMobileNumber: hostMobileNumber,
             email: email,
             isNotPickedUp: true,
-            isPickedUp: false
-            );
+            isPickedUp: false);
 }

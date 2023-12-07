@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
+import 'package:suroyapp/models/vehicle_info.dart';
 import 'package:suroyapp/screens/listing_details.dart';
 
 class Listings extends StatefulWidget {
@@ -61,6 +61,7 @@ class _ListingsState extends State<Listings> {
                     FinalVehicleInfo listingInfo = FinalVehicleInfo(
                         isAvailable: docs[index]['isAvailable'],
                         rentPrice: docs[index]['pricing'],
+                        bookingStatus: docs[index]['bookingStatus'],
                         vehicleDescription: docs[index]['description'],
                         pickUpAddress: docs[index]['renterAddress'],
                         vehicleType: docs[index]['vehicleType'],
@@ -69,7 +70,8 @@ class _ListingsState extends State<Listings> {
                         numSeats: docs[index]['numSeats'],
                         modelYear: docs[index]['modelYear'],
                         plateNumber: docs[index]['licensePlateNum'],
-                        imageUrl: docs[index]['vehicleImage'],
+                        vehicleImageUrl: docs[index]['vehicleImage'],
+                        certificateImageUrl: "",
                         hostAge: docs[index]['hostAge'],
                         hostMobileNumber: docs[index]['hostMobileNumber'],
                         email: docs[index]['email']);

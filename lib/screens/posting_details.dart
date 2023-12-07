@@ -1,13 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:suroyapp/models/message.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
+import 'package:suroyapp/screens/chat_screen.dart';
+import 'package:suroyapp/screens/message_details.dart';
 import 'package:suroyapp/screens/payment_screen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:suroyapp/reusable_widgets/vehicle_info.dart';
-
+import 'package:suroyapp/models/vehicle_info.dart';
 
 class PostingDetails extends StatefulWidget {
   final String vehicleModel;
@@ -23,6 +27,10 @@ class PostingDetails extends StatefulWidget {
   final String hostAge;
   final String hostMobileNumber;
   final String email;
+  final String hostId;
+  final String bookingStatus;
+  final String vehicleImageUrl;
+  final String certificateImageUrl;
 
   const PostingDetails({
     Key? key,
@@ -39,7 +47,10 @@ class PostingDetails extends StatefulWidget {
     required this.hostAge,
     required this.hostMobileNumber,
     required this.email,
-
+    required this.hostId,
+    required this.bookingStatus,
+    required this.vehicleImageUrl,
+    required this.certificateImageUrl,
   }) : super(key: key);
 
   @override
@@ -55,7 +66,127 @@ class _PostingDetailsState extends State<PostingDetails> {
   String endMonth = "";
   late GoogleMapController mapController;
   List<Marker> _markers = [];
+  late TextEditingController messageController;
 
+  @override
+  void initState() {
+    super.initState();
+    messageController = TextEditingController();
+  }
+
+  Future<void> _updateMapLocation() async {
+    LatLng location = await _getLatLngFromAddress(widget.vehicleAddress);
+    mapController.animateCamera(CameraUpdate.newLatLng(location));
+    setState(() {
+      _markers.add(
+        Marker(
+          markerId: MarkerId('vehicleLocation'),
+          position: location,
+          infoWindow: InfoWindow(
+            title: 'Vehicle Location',
+            snippet: widget.vehicleAddress,
+          ),
+        ),
+      );
+    });
+  }
+
+  Future<LatLng> _getLatLngFromAddress(String address) async {
+    try {
+      RegExp regex = RegExp(r"LatLng\(([-+]?\d*\.?\d+), ([-+]?\d*\.?\d+)\)");
+      Match match = regex.firstMatch(address)!;
+      double latitude = double.parse(match.group(1)!);
+      double longitude = double.parse(match.group(2)!);
+
+      return LatLng(latitude, longitude);
+    } catch (e) {
+      print("Error fetching LatLng from address: $e");
+      return const LatLng(0.0, 0.0);
+    }
+  }
+Future<void> checkConversationAndNavigate() async {
+  // Check if the 'conversations' collection exists
+  var collectionExists = await FirebaseFirestore.instance
+      .collection('conversations')
+      .limit(1)
+      .get();
+
+  if (collectionExists.docs.isEmpty) {
+    // If the 'conversations' collection doesn't exist, create it
+    await FirebaseFirestore.instance.collection('conversations').doc().set({});
+  }
+
+  // Now, check for the specific conversation
+var existingConversation = await FirebaseFirestore.instance
+    .collection('conversations')
+    .where('participants', arrayContainsAny: [widget.hostId, FirebaseAuth.instance.currentUser!.uid])
+    .get();
+
+
+  if (existingConversation.docs.isEmpty) {
+    // If no existing conversation, create a new conversation
+   await FirebaseFirestore.instance.collection('conversations').add(
+  Conversation(
+    hostId: widget.hostId,
+    guestId: FirebaseAuth.instance.currentUser!.uid,
+    hostName: widget.hostName,
+    guestName: FirebaseAuth.instance.currentUser!.displayName ?? 'Guest',
+    lastMessage: 'Conversation started',
+    timestamp: Timestamp.now(),
+    participants: [widget.hostId, FirebaseAuth.instance.currentUser!.uid], // Add this line
+  ).toMap(),
+);
+  }
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => ChatScreen(
+        hostId: widget.hostId,
+        guestId: FirebaseAuth.instance.currentUser!.uid,
+        hostName: widget.hostName,
+      ),
+    ),
+  );
+}
+
+
+  Future<void> sendMessage(String message) async {
+    CollectionReference messages = FirebaseFirestore.instance.collection('messages');
+
+    await messages.add(Message(
+      senderId: FirebaseAuth.instance.currentUser!.uid,
+      receiverId: widget.hostId,
+      receiverName: widget.hostName,
+      text: message,
+      timestamp: Timestamp.now(), 
+    ).toMap());
+  }
+
+  Widget buildChatInput() {
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: messageController,
+            decoration: InputDecoration(
+              hintText: 'Type your message...',
+            ),
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.send),
+          onPressed: () {
+            String message = messageController.text.trim();
+            if (message.isNotEmpty) {
+              sendMessage(message);
+              messageController.clear();
+            }
+          },
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -200,6 +331,9 @@ class _PostingDetailsState extends State<PostingDetails> {
                           ),
                         ],
                       ),
+                      SizedBox(
+                        width: 120,
+                      ),
                     ],
                   ),
                 ),
@@ -337,6 +471,7 @@ class _PostingDetailsState extends State<PostingDetails> {
                         VehicleInformationWithDate(
                       isAvailable: true,
                       startDate: startDate,
+                      bookingStatus: widget.bookingStatus,
                       endDate: endDate,
                       vehicleDescrition: widget.description,
                       pickUpAddress: widget.vehicleAddress,
@@ -346,7 +481,8 @@ class _PostingDetailsState extends State<PostingDetails> {
                       numSeats: widget.numOfSeats,
                       modelYear: widget.modelYear,
                       plateNumber: widget.plateNum,
-                      imageUrl: widget.vImageURL,
+                      vehicleImageUrl: widget.vehicleImageUrl,
+                      certificateImageUrl: widget.certificateImageUrl,
                       rentPrice: widget.rentPrice,
                       hostAge: widget.hostAge,
                       hostMobileNumber: widget.hostMobileNumber,
@@ -355,9 +491,10 @@ class _PostingDetailsState extends State<PostingDetails> {
 
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PaymentPage(
-                        vehicleInfo: vehicleInformationWithDate,
-                      )),
+                      MaterialPageRoute(
+                          builder: (context) => PaymentPage(
+                                vehicleInfo: vehicleInformationWithDate,
+                              )),
                     );
                   },
                   child: reserveButton(),
@@ -368,38 +505,5 @@ class _PostingDetailsState extends State<PostingDetails> {
         ),
       ),
     );
-  }
-
-  Future<void> _updateMapLocation() async {
-    LatLng location = await _getLatLngFromAddress(widget.vehicleAddress);
-    mapController.animateCamera(CameraUpdate.newLatLng(location));
-    setState(() {
-      _markers.add(
-        Marker(
-          markerId: MarkerId('vehicleLocation'),
-          position: location,
-          infoWindow: InfoWindow(
-            title: 'Vehicle Location',
-            snippet: widget.vehicleAddress,
-          ),
-        ),
-      );
-    });
-  }
-
-  Future<LatLng> _getLatLngFromAddress(String address) async {
-    try {
-      // Extracting latitude and longitude from the string
-      RegExp regex = RegExp(r"LatLng\(([-+]?\d*\.?\d+), ([-+]?\d*\.?\d+)\)");
-      Match match = regex.firstMatch(address)!;
-      double latitude = double.parse(match.group(1)!);
-      double longitude = double.parse(match.group(2)!);
-
-      return LatLng(latitude, longitude);
-    } catch (e) {
-      print("Error fetching LatLng from address: $e");
-      // Return a default location in case of an error
-      return const LatLng(0.0, 0.0);
-    }
   }
 }

@@ -146,7 +146,7 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => const SignUpScreen(),
@@ -208,7 +208,7 @@ class _SignInScreenState extends State<SignInScreen> {
         await FirebaseFirestore.instance
             .collection('userLocation')
             .add({'email': email,
-            'location': userGeoLocation});
+            'location': newLocation});
       }
     } catch (e) {
       print('Error getting or updating location: $e');

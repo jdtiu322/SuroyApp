@@ -19,8 +19,9 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final user = FirebaseAuth.instance.currentUser!;
-  late String firstName = ""; // Initialize with empty string
-  late String lastName = "";  // Initialize with empty string
+  late String firstName = "";
+  late String lastName = "";
+  late String age = "";
 
   @override
   void initState() {
@@ -40,6 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         setState(() {
           firstName = snapshot.data()?['firstName'] ?? "";
           lastName = snapshot.data()?['lastName'] ?? "";
+          age = snapshot.data()?['age'] ?? "";
         });
       }
     } catch (e) {
@@ -61,59 +63,77 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   20, MediaQuery.of(context).size.height * 0, 20, 0),
               child: Column(
                 children: <Widget>[
-                   GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const ProfileDetails()));
-      },
-      child: Container(
-          height: 110,
-          decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey)),
-              color: Colors.white),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/vectors/profile-circle.svg',
-                  width: 60,
-                  height: 60,
-                ),
-                const SizedBox(
-                  width: 15,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                       '$firstName $lastName',
-                        style: GoogleFonts.poppins(
-                          fontSize: 18,
-                        ),
+                  Container(
+                    height: 110,
+                    decoration: const BoxDecoration(
+                        border: Border(bottom: BorderSide(color: Colors.grey)),
+                        color: Colors.white),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/vectors/profile-circle.svg',
+                            width: 60,
+                            height: 60,
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '$firstName $lastName',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+Align(
+  alignment: Alignment.centerRight,
+  child: GestureDetector(
+    onTap: () {
+      // Show a confirmation dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Log Out'),
+            content: Text('Are you sure you want to log out?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  // Perform the logout action
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.of(context).pop(); // Close the dialog
+                  // Navigate to the login screen or another appropriate screen
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+                child: Text('Log Out'),
+              ),
+            ],
+          );
+        },
+      );
+    },
+    child: SvgPicture.asset('assets/vectors/arrow-right.svg'),
+  ),
+)
+                        ],
                       ),
-                      Text(
-                        "Show Profile",
-                        style: GoogleFonts.poppins(
-                          fontSize: 15,
-                          color: Colors.grey,
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                ),
-                Align(
-                    alignment: Alignment.centerRight,
-                    child: SvgPicture.asset(
-                      'assets/vectors/arrow-right.svg',
-                    ))
-              ],
-            ),
-          ),
-          ),
-    ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -180,22 +200,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
-                            child: Image.asset('assets/images/landingpage.png',
-                                width: 130, height: 130),
+                            child: Image.asset(
+                              'assets/images/landingpage.png',
+                              width: 110,
+                            ),
                           )
                         ]),
                       ),
                     ),
                   ),
-                   const SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Listings()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Listings()));
                     },
                     child: Material(
                       elevation: 4.0,
@@ -250,15 +270,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
-                            child: Image.asset('assets/images/vehicle-listing.png',
-                                width: 130),
+                            child: Image.asset(
+                                'assets/images/vehicle-listing.png',
+                                width: 110),
                           )
                         ]),
                       ),
                     ),
                   ),
-                    SizedBox(height: 20,),
-                                    GestureDetector(
+                  SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
                     onTap: () {
                       Navigator.push(
                           context,
@@ -321,8 +344,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
-                            child: Image.asset('assets/images/vehicle-listing.png',
-                                width: 130),
+                            child: Image.asset(
+                                'assets/images/vehicle-listing.png',
+                                width: 110),
                           )
                         ]),
                       ),
@@ -350,8 +374,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       centerTitle: true,
       leading: GestureDetector(
         onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()));
         },
         child: Container(
           margin: const EdgeInsets.all(10),
@@ -367,8 +391,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       actions: [
         GestureDetector(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const NotificationScreen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NotificationScreen()));
           },
           child: Padding(
             padding: const EdgeInsets.only(right: 10.0),

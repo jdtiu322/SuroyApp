@@ -32,7 +32,13 @@ class _ComplaintsState extends State<Complaints> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+          title: Text(
+        "Complaints Overview",
+        style: GoogleFonts.poppins(
+          fontWeight: FontWeight.w500,
+        ),
+      )),
       body: StreamBuilder(
         stream: _userStream,
         builder: (context, snapshot) {
@@ -55,30 +61,127 @@ class _ComplaintsState extends State<Complaints> {
                   child: Column(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color:
-                              Colors.white.withOpacity(.7), // Container color
-                          boxShadow: [
-                            BoxShadow(
-                              color:
-                                  Colors.black.withOpacity(0.2), // Shadow color
-                              blurRadius: 10,
-                              spreadRadius: 2,
-                              offset: Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        height: 120,
-                        width: MediaQuery.of(context).size.width,
-                        child: Column(
-                          children: [
-                            Container(
-                              
-                            )
-                          ],
-                        )
-                      ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color:
+                                Colors.white.withOpacity(.7), // Container color
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black
+                                    .withOpacity(0.2), // Shadow color
+                                blurRadius: 10,
+                                spreadRadius: 2,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          height: 150,
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          "Complaint Description",
+                                          style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        content: Text(
+                                          docs[index]['description'],
+                                          style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(
+                                                  context); // Close the dialog
+                                            },
+                                            child: Text(
+                                              'Close',
+                                              style: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                    child: Padding(
+                                  padding: EdgeInsets.all(20),
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            docs[index]['complaintCategory'],
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            docs[index]['vehicleModel'],
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                          Text(
+                                            docs[index]['plateNumber'],
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                          Text(
+                                            "Listed by: " +
+                                                docs[index]['hostName'],
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                          RichText(
+                                            text: TextSpan(
+                                              text: 'Complaint Status: ',
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal,
+                                                color: Colors
+                                                    .black, // Adjust the color as needed
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                  text: docs[index]
+                                                      ['complaintStatus'],
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors
+                                                        .black, // Adjust the color as needed
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )),
+                              )
+                            ],
+                          )),
                       SizedBox(height: 16),
                     ],
                   ),
