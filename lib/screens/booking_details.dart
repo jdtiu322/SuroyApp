@@ -10,6 +10,7 @@ import 'package:suroyapp/screens/cancellation_screen.dart';
 import 'package:suroyapp/screens/complaints_screen.dart';
 import 'package:suroyapp/screens/starting_page.dart';
 import 'package:suroyapp/screens/status_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BookingDetailsScreen extends StatefulWidget {
   final BookingInfo bookingDetails;
@@ -260,12 +261,23 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        TextSpan(
-                          text: widget.bookingDetails.email,
-                          style: GoogleFonts.poppins(
-                            color: Colors.black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal,
+                        WidgetSpan(
+                          child: GestureDetector(
+                            onTap: () {
+                              // Launch the email app with the host's email
+                         // ignore: deprecated_member_use
+                         launch("mailto:${widget.bookingDetails.email}");
+
+                            },
+                            child: Text(
+                              widget.bookingDetails.email,
+                              style: GoogleFonts.poppins(
+                                color: Colors.blue,
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
                           ),
                         ),
                       ],

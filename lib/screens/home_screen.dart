@@ -12,19 +12,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-      
   User? user = FirebaseAuth.instance.currentUser;
   late String userID;
   late Stream<QuerySnapshot> _userStream;
+  bool isHeartFilled = false;
 
   @override
   void initState() {
     super.initState();
     if (user != null) {
       userID = user!.uid;
-      _userStream = FirebaseFirestore.instance.collection('vehicleListings')
-      .where('isAvailable', isEqualTo: true)
-      .snapshots();
+      _userStream = FirebaseFirestore.instance
+          .collection('vehicleListings')
+          .where('isAvailable', isEqualTo: true)
+          .snapshots();
     }
   }
 
@@ -65,14 +66,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 numOfSeats: docs[index]['numSeats'],
                                 vehicleAddress: docs[index]['renterAddress'],
                                 hostAge: docs[index]['hostAge'],
-                                hostMobileNumber: docs[index]['hostMobileNumber'],
+                                hostMobileNumber: docs[index]
+                                    ['hostMobileNumber'],
                                 email: docs[index]['email'],
                                 hostId: docs[index]['hostId'],
                                 bookingStatus: docs[index]['bookingStatus'],
                                 vehicleImageUrl: docs[index]['vehicleImage'],
-                                certificateImageUrl: docs[index]['certificateImage'],
-                             
-                                
+                                certificateImageUrl: docs[index]
+                                    ['certificateImage'],
                               )));
                 },
                 child: Container(
@@ -86,12 +87,37 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.network(imageUrl,
-                              height: 200,
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.fitWidth),
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.network(
+                                imageUrl,
+                                height: 200,
+                                width: MediaQuery.of(context).size.width,
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
+                            Positioned(
+                              top: 16,
+                              right: 16,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isHeartFilled = !isHeartFilled;
+                                  });
+                                },
+                                child: Icon(
+                                  isHeartFilled
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color:
+                                      isHeartFilled ? Colors.red : Colors.white,
+                                  size: 32,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(
