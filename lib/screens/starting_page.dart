@@ -26,7 +26,8 @@ class _StartingPageState extends State<StartingPage> {
     const HomeScreen(),
     const WishlistScreen(),
     const BookingsScreen(),
-     const ProfileScreen(),
+    const MessageScreen(),
+    const ProfileScreen(),
   ];
 
   @override
@@ -38,7 +39,6 @@ class _StartingPageState extends State<StartingPage> {
         type: BottomNavigationBarType.shifting,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black,
-      
         onTap: navigateBottomBar,
         items: [
           BottomNavigationBarItem(
@@ -58,7 +58,10 @@ class _StartingPageState extends State<StartingPage> {
             ),
             label: 'Bookings',
           ),
-         BottomNavigationBarItem(
+          BottomNavigationBarItem(
+              icon: SvgPicture.asset('assets/vectors/message.svg'),
+              label: 'Messages'),
+          BottomNavigationBarItem(
             icon: SvgPicture.asset('assets/vectors/profile.svg'),
             label: 'Profile',
           ),
