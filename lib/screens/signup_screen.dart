@@ -1,13 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:suroyapp/reusable_widgets/user_image.dart';
 import 'package:suroyapp/screens/home_screen.dart';
 import 'package:suroyapp/screens/signin_screen.dart';
+import 'package:suroyapp/screens/starting_page.dart';
 import 'package:suroyapp/utils/color_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 
 class SignUpScreen extends StatefulWidget {
-const SignUpScreen({super.key});
+  const SignUpScreen({super.key});
 
   @override
   State<SignUpScreen> createState() => SignUpScreenState();
@@ -22,6 +25,7 @@ class SignUpScreenState extends State<SignUpScreen> {
   TextEditingController ageTextController = TextEditingController();
   TextEditingController phoneNumberTextController = TextEditingController();
   TextEditingController driverLicenseTextController = TextEditingController();
+  String licenseImageUrl = "";
 
   @override
   Widget build(BuildContext context) {
@@ -29,23 +33,15 @@ class SignUpScreenState extends State<SignUpScreen> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              hexStringToColor("FFFFFF"),
-              hexStringToColor("#2A61C8"),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        decoration: const BoxDecoration(color: Colors.white),
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0, 20, 0),
+            padding: EdgeInsets.fromLTRB(
+                20, MediaQuery.of(context).size.height * 0, 20, 0),
             child: Column(
               children: <Widget>[
-                SizedBox(height: 30),
-                Text(
+                const SizedBox(height: 30),
+                const Text(
                   "Create an account",
                   style: TextStyle(
                     fontFamily: 'Poppins',
@@ -54,36 +50,66 @@ class SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 signInOption(),
-                SizedBox(height: 30),
-                reusableTextField("Email", Icons.mail, false, emailTextController),
-                SizedBox(height: 20),
-                reusableTextField("Password", Icons.lock_outline, true, passwordTextController),
-                SizedBox(height: 20),
-                reusableTextField("First Name", Icons.person_outline, false, firstNameTextController),
-                SizedBox(height: 20),
-                reusableTextField("Middle Name", Icons.person_outline, false, middleNameTextController),
-                SizedBox(height: 20),
-                reusableTextField("Last Name", Icons.person_outline, false, lastNameTextController),
-                SizedBox(height: 20),
+                const SizedBox(height: 30),
+                reusableTextField(
+                    "Email", Icons.mail, false, emailTextController),
+                const SizedBox(height: 20),
+                reusableTextField("Password", Icons.lock_outline, true,
+                    passwordTextController),
+                const SizedBox(height: 20),
+                reusableTextField("First Name", Icons.person_outline, false,
+                    firstNameTextController),
+                const SizedBox(height: 20),
+                reusableTextField("Middle Name", Icons.person_outline, false,
+                    middleNameTextController),
+                const SizedBox(height: 20),
+                reusableTextField("Last Name", Icons.person_outline, false,
+                    lastNameTextController),
+                const SizedBox(height: 20),
                 Row(
                   children: [
                     Expanded(
-                      child: resizableTextField("Phone Number", Icons.phone_android_outlined, 180, phoneNumberTextController),
+                      child: resizableTextField(
+                          "Phone Number",
+                          Icons.phone_android_outlined,
+                          180,
+                          phoneNumberTextController),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ), // Add some spacing between the two fields
                     Expanded(
-                      child: resizableTextField("Age", Icons.hourglass_bottom, 180, ageTextController),
+                      child: resizableTextField("Age", Icons.hourglass_bottom,
+                          180, ageTextController),
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
-                reusableTextField("Driver's License", Icons.numbers_outlined, false, driverLicenseTextController),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
+                reusableTextField("Driver's License", Icons.numbers_outlined,
+                    false, driverLicenseTextController),
+                const SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    "Add image of your driver's license",
+                    style: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                UserImage(onFileChanged: ((imageUrl) {
+                  setState(() {
+                    this.licenseImageUrl = imageUrl;
+                  });
+                })),
                 signInSignUpButton(context, false, () async {
                   try {
-                    UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                    UserCredential userCredential = await FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
                       email: emailTextController.text,
                       password: passwordTextController.text,
                     );
@@ -93,18 +119,27 @@ class SignUpScreenState extends State<SignUpScreen> {
 
                     if (user != null) {
                       // Save additional user information to Firestore
-                      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+                      await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(user.uid)
+                          .set({
+                        'userID': user.uid,
                         'email': emailTextController.text,
+                        'password': passwordTextController.text,
                         'firstName': firstNameTextController.text,
                         'middleName': middleNameTextController.text,
                         'lastName': lastNameTextController.text,
                         'age': ageTextController.text,
                         'phoneNumber': phoneNumberTextController.text,
                         'driverLicense': driverLicenseTextController.text,
+                        'licenseImageUrl': licenseImageUrl
                       });
 
                       print("New account created");
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const StartingPage()));
                     }
                   } catch (error) {
                     print("Invalid account details ${error.toString()}");
@@ -122,7 +157,10 @@ class SignUpScreenState extends State<SignUpScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Have an account already? Click here to", style: TextStyle(color: Colors.grey)),
+        const Text("Have an account already? Click here to",
+            style: TextStyle(
+              color: Color(0xfff004aad),
+            )),
         GestureDetector(
           onTap: () {
             Navigator.push(
@@ -135,7 +173,7 @@ class SignUpScreenState extends State<SignUpScreen> {
           child: const Text(
             " log-in",
             style: TextStyle(
-              color: Colors.grey,
+              color: Color(0xfff004aad),
               fontWeight: FontWeight.w500,
               decoration: TextDecoration.underline,
               decorationColor: Colors.grey,
