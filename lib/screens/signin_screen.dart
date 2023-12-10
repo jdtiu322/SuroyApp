@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
+import 'package:suroyapp/screens/renter_landing_screen.dart';
 import 'package:suroyapp/screens/signup_screen.dart';
 import 'package:suroyapp/screens/starting_page.dart';
 
@@ -112,7 +113,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const StartingPage(),
+                        builder: (context) => const RenterLandingScreen(),
                       ),
                     );
                   }).catchError((error, stackTrace) {
