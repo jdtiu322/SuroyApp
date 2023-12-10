@@ -202,7 +202,7 @@ class _ApplicationState extends State<Application> {
                       email: email,
                     );
 
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>

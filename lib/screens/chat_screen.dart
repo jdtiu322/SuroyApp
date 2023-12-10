@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:suroyapp/reusable_widgets/chat_bubble.dart';
 import 'package:suroyapp/reusable_widgets/chat_service.dart';
 import 'package:suroyapp/reusable_widgets/my_text_field.dart';
 
@@ -71,17 +72,22 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget _buildMessageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
-    var alignment = data['senderId'] == firebaseAuth.currentUser!.uid
+    var alignment = (data['senderId'] == firebaseAuth.currentUser!.uid)
         ? Alignment.centerRight
         : Alignment.centerLeft;
 
-    return Container(
+    return 
+    Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
       alignment: alignment,
       child: Column(
+        crossAxisAlignment: (data['senderId'] == firebaseAuth.currentUser!.uid)? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        mainAxisAlignment: (data['senderId'] == firebaseAuth.currentUser!.uid)? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
-          Text(data['senderEmail']),
-          Text(data['message']),
+          ChatBubble(message: data['message'])
         ],
+      ),
       ),
     );
   }

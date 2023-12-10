@@ -86,7 +86,7 @@ class _DescriptionRegistrationState extends State<DescriptionRegistration> {
                     );
 
                     // Navigate to the PriceRegistration page and pass the information
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => PriceRegistration(

@@ -341,7 +341,7 @@ class _AddressRegistrationState extends State<AddressRegistration> {
     print('Selected Location: $selectedPosition');
     print('Complete Vehicle Information: $vehicleInfo2');
 
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) =>
