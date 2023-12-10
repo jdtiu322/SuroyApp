@@ -1,78 +1,66 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/material.dart';
-// import 'package:suroyapp/screens/chat_screen.dart';
-// import 'package:suroyapp/screens/specific_conversations.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:suroyapp/screens/chat_screen.dart';
 
-// class MessageScreen extends StatefulWidget {
-//   const MessageScreen({Key? key}) : super(key: key);
+class MessageScreen extends StatefulWidget {
+  const MessageScreen({super.key});
 
-//   @override
-//   _MessageScreenState createState() => _MessageScreenState();
-// }
+  @override
+  State<MessageScreen> createState() => _MessageScreenState();
+}
 
-// class _MessageScreenState extends State<MessageScreen> {
-//   late Stream<QuerySnapshot> _conversationsStream;
+class _MessageScreenState extends State<MessageScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     String currentUserId = FirebaseAuth.instance.currentUser!.uid;
-//     _conversationsStream = FirebaseFirestore.instance
-//         .collection('conversations')
-//         .where('participants', arrayContains: currentUserId)
-//         .snapshots();
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home Page'),
+      ),
+      body: _buildUserList(),
+    );
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Messages"),
-//       ),
-//       body: StreamBuilder<QuerySnapshot>(
-//         stream: _conversationsStream,
-//         builder: (context, snapshot) {
-//           if (snapshot.connectionState == ConnectionState.waiting) {
-//             return Center(child: CircularProgressIndicator());
-//           }
+  Widget _buildUserList() {
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('users').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text("Error in gathering snapshots");
+          }
 
-//           if (snapshot.hasError) {
-//             return Center(child: Text('Error: ${snapshot.error}'));
-//           }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text("Waiting for conncection");
+          }
 
-//           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-//             return Center(child: Text('No conversations yet.'));
-//           }
+          return ListView(
+              children: snapshot.data!.docs
+                  .map<Widget>((doc) => _buildUserListItem(doc))
+                  .toList());
+        });
+  }
 
-//           return ListView.builder(
-//             itemCount: snapshot.data!.docs.length,
-//             itemBuilder: (context, index) {
-//               var conversation = snapshot.data!.docs[index];
-//               // Extract necessary data from the conversation document
-//               String hostName = conversation['hostName'];
-//               String hostId = conversation['hostId'];
+  Widget _buildUserListItem(DocumentSnapshot document) {
+    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
-//               return ListTile(
-//                 title: Text(hostName),
-//                 subtitle: Text(''), // Display the last message if available
-//                 onTap: () {
-//                   Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                       builder: (context) => ChatScreen(
-//                         hostId: hostId,
-//                         guestId: FirebaseAuth.instance.currentUser!.uid,
-//                         hostName: hostName,
-//                       ),
-//                     ),
-//                   );
-//                 },
-//               );
-//             },
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
+    if (_auth.currentUser!.email != data['email']) {
+      return ListTile(
+        title: Text(data['firstName'] + " " + data['lastName']),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChatScreen(
+                      receiverUserEmail: data['email'],
+                      receiverUserID: data['userID'],
+                      receiverFullName: data['firstName'] + " " + data['lastName'],)));
+        },
+      );
+    } else {
+      return Container();
+    }
+  }
+}
