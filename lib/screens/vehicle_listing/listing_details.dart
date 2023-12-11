@@ -3,8 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/models/vehicle_info.dart';
-import 'package:suroyapp/screens/listing_removal_screen.dart';
+import 'package:suroyapp/screens/vehicle_listing/listing_removal_screen.dart';
 import 'package:suroyapp/screens/location_tracking_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ListingDetails extends StatefulWidget {
   final FinalVehicleInfo listingInfo;
@@ -159,6 +160,27 @@ class _ListingDetailsState extends State<ListingDetails> {
                   ),
                 ),
                 Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Having troubles?"),
+                    GestureDetector(
+                      onTap: () {
+                        launch("mailto:suroyapp@gmail.com");
+                      },
+                      child: Text(
+                        "Contact us",
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
                 Visibility(
                   visible: available,
                   child: ElevatedButton(
@@ -217,7 +239,7 @@ class _ListingDetailsState extends State<ListingDetails> {
                             fontSize: 12,
                             color: Colors.white,
                           )),
-                    )),             
+                    )),
               ],
             ),
           ),

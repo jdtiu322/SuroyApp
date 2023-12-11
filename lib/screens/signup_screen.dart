@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,10 +34,7 @@ class SignUpScreenState extends State<SignUpScreen> {
   TextEditingController driverLicenseTextController = TextEditingController();
 
   final AuthController _authController = AuthController();
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   Uint8List? _image;
 
   String? licenseImageUrl;
@@ -52,7 +49,8 @@ class SignUpScreenState extends State<SignUpScreen> {
   late String driverLicense;
 
   selectGalleryImage() async {
-    Uint8List im = await _authController.pickProfileImage(ImageSource.gallery);
+    Uint8List im =
+        await _authController.pickProfileImage(ImageSource.gallery);
 
     setState(() {
       _image = im;
@@ -70,10 +68,19 @@ class SignUpScreenState extends State<SignUpScreen> {
       age = ageTextController.text;
       phoneNumber = phoneNumberTextController.text;
       driverLicense = driverLicenseTextController.text;
-      await _authController
-          .registerRenter(firstName, middleName, lastName, age, email, password,
-              phoneNumber, driverLicense, _image)
-          .whenComplete(() {
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      await _authController.registerRenter(
+        firstName,
+        middleName,
+        lastName,
+        age,
+        email,
+        password,
+        phoneNumber,
+        driverLicense,
+        _image,
+        fcmToken.toString(), // Replace 'fcmToken' with the actual FCM token
+      ).whenComplete(() {
         EasyLoading.dismiss();
         Navigator.pushReplacement(
           context,
@@ -115,17 +122,17 @@ class SignUpScreenState extends State<SignUpScreen> {
                   reusableTextField(
                       "Email", Icons.mail, false, emailTextController),
                   const SizedBox(height: 20),
-                  reusableTextField("Password", Icons.lock_outline, true,
-                      passwordTextController),
+                  reusableTextField(
+                      "Password", Icons.lock_outline, true, passwordTextController),
                   const SizedBox(height: 20),
-                  reusableTextField("First Name", Icons.person_outline, false,
-                      firstNameTextController),
+                  reusableTextField(
+                      "First Name", Icons.person_outline, false, firstNameTextController),
                   const SizedBox(height: 20),
-                  reusableTextField("Middle Name", Icons.person_outline, false,
-                      middleNameTextController),
+                  reusableTextField(
+                      "Middle Name", Icons.person_outline, false, middleNameTextController),
                   const SizedBox(height: 20),
-                  reusableTextField("Last Name", Icons.person_outline, false,
-                      lastNameTextController),
+                  reusableTextField(
+                      "Last Name", Icons.person_outline, false, lastNameTextController),
                   const SizedBox(height: 20),
                   Row(
                     children: [
@@ -138,16 +145,16 @@ class SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(
                         width: 20,
-                      ), // Add some spacing between the two fields
+                      ),
                       Expanded(
-                        child: resizableTextField("Age", Icons.hourglass_bottom,
-                            180, ageTextController),
+                        child: resizableTextField(
+                            "Age", Icons.hourglass_bottom, 180, ageTextController),
                       ),
                     ],
                   ),
                   const SizedBox(height: 20),
-                  reusableTextField("Driver's License", Icons.numbers_outlined,
-                      false, driverLicenseTextController),
+                  reusableTextField(
+                      "Driver's License", Icons.numbers_outlined, false, driverLicenseTextController),
                   const SizedBox(height: 20),
                   Align(
                     alignment: Alignment.bottomLeft,
@@ -170,12 +177,10 @@ class SignUpScreenState extends State<SignUpScreen> {
                           selectGalleryImage();
                         },
                         child: Container(
-                          width: 108, // Adjust size as needed
+                          width: 108,
                           height: 108,
                           decoration: BoxDecoration(
-                            shape: BoxShape
-                                .rectangle, // You can adjust shape as needed
-                            // Add any additional styling you need
+                            shape: BoxShape.rectangle,
                           ),
                           child: _image == null
                               ? SvgPicture.asset(
@@ -183,17 +188,14 @@ class SignUpScreenState extends State<SignUpScreen> {
                                   fit: BoxFit.cover,
                                 )
                               : Image.memory(
-                                  _image!, // _image is checked for null above, so ! is safe here
+                                  _image!,
                                   fit: BoxFit.cover,
                                 ),
                         ),
                       ),
-              
-                      // Space between the image and the text
                       SizedBox(
-                          height: 5), // Adjust the height for more or less space
-              
-                      // Text Widget for 'Change Photo' or 'Select photo'
+                        height: 5,
+                      ),
                       InkWell(
                         onTap: () {
                           selectGalleryImage();

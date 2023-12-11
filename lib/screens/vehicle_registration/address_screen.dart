@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart' as places;
 import 'package:location/location.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
-import 'package:suroyapp/screens/description_screen.dart';
+import 'package:suroyapp/screens/vehicle_registration/description_screen.dart';
 import 'package:suroyapp/models/vehicle_info.dart';
 import 'package:geocoder2/geocoder2.dart';
 
@@ -248,7 +248,7 @@ class _AddressRegistrationState extends State<AddressRegistration> {
       markerId: const MarkerId('myLocation'),
       position: LatLng(latitude, longitude),
       infoWindow: const InfoWindow(
-        title: 'Naa diri mo sakyanan badi',
+        title: 'Your vehicle will be picked-up here',
       ),
     );
     setState(() {
@@ -313,7 +313,7 @@ class _AddressRegistrationState extends State<AddressRegistration> {
     markerId: const MarkerId('myLocation'),
     position: latlng,
     infoWindow: const InfoWindow(
-      title: 'Naa diri imo sakyanan gwapo litse ka',
+      title: 'Your vehicle will be picked up here',
     ),
   );
   setState(() {

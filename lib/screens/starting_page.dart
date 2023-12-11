@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:suroyapp/screens/bookings_screen.dart';
+import 'package:suroyapp/screens/vehicle_booking/bookings_screen.dart';
 import 'package:suroyapp/screens/home_screen.dart';
 import 'package:suroyapp/screens/message_screen.dart';
 import 'package:suroyapp/screens/profile_screen.dart';

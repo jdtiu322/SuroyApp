@@ -106,7 +106,7 @@ class FinalVehicleInfo extends VehicleInformation3 {
     required String numSeats,
     required String modelYear,
     required String plateNumber,
-        required String vehicleImageUrl,
+    required String vehicleImageUrl,
     required String certificateImageUrl,
     required String hostAge,
     required String hostMobileNumber,
@@ -130,10 +130,12 @@ class FinalVehicleInfo extends VehicleInformation3 {
 class VehicleInformationWithDate extends FinalVehicleInfo {
   final DateTime startDate;
   final DateTime endDate;
+  final String hostId;
 
   VehicleInformationWithDate({
     required this.startDate,
     required this.endDate,
+    required this.hostId,
     required bool isAvailable,
     required String rentPrice,
     required String bookingStatus,

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:suroyapp/models/vehicle_info.dart';
-import 'package:suroyapp/screens/booking_details.dart';
+import 'package:suroyapp/screens/vehicle_booking/booking_details.dart';
 
 class BookingsScreen extends StatefulWidget {
   const BookingsScreen({Key? key}) : super(key: key);

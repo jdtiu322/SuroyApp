@@ -6,13 +6,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
-//UPLOADING IMAGE AND PICK IMAGE
+
+  // UPLOADING IMAGE AND PICK IMAGE
 
   _uploadProfileImageToStorage(Uint8List? image) async {
     Reference ref =
@@ -38,9 +38,9 @@ class AuthController extends GetxController {
     }
   }
 
-//UPLOADING IMAGE AND PICK IMAGE ENDS HERE
+  // UPLOADING IMAGE AND PICK IMAGE ENDS HERE
 
-//FUNCTION TO CREATE NEW USER
+  // FUNCTION TO CREATE NEW USER
   Future<String> registerRenter(
     String firstName,
     String middleName,
@@ -51,14 +51,17 @@ class AuthController extends GetxController {
     String phoneNumber,
     String driverLicense,
     Uint8List? image,
+    String fcmToken,
   ) async {
-    String res = 'some error occured';
+    String res = 'some error occurred';
 
     try {
       if (image != null) {
-        //CREATE NEW USER IN FIREBASE AUTH
+        // CREATE NEW USER IN FIREBASE AUTH
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
+          email: email,
+          password: password,
+        );
 
         String licenseImageUrl = await _uploadProfileImageToStorage(image);
 
@@ -74,11 +77,12 @@ class AuthController extends GetxController {
           'driverLicense': driverLicense,
           'approved': false,
           'userId': cred.user!.uid,
+          'fcmToken': fcmToken,
         });
 
         res = 'success';
       } else {
-        res = 'please Fields must be field in';
+        res = 'please Fields must be filled in';
       }
     } catch (e) {
       res = e.toString();
@@ -89,16 +93,16 @@ class AuthController extends GetxController {
 
   // FUNCTION TO CREATE NEW USER ENDS HERE
 
-//FUNCTION TO LOGIN USER
+  // FUNCTION TO LOGIN USER
 
   Future<String> loginUser(
     String email,
     String password,
   ) async {
-    String res = 'some error occured';
+    String res = 'some error occurred';
 
     try {
-      //CREATE NEW USER IN FIREBASE AUTH
+      // CREATE NEW USER IN FIREBASE AUTH
       await _auth.signInWithEmailAndPassword(email: email, password: password);
 
       res = 'success';

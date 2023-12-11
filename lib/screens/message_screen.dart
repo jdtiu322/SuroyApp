@@ -18,7 +18,7 @@ class _MessageScreenState extends State<MessageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text('My Messages'),
       ),
       body: _buildUserList(),
     );
@@ -54,9 +54,11 @@ class _MessageScreenState extends State<MessageScreen> {
               context,
               MaterialPageRoute(
                   builder: (context) => ChatScreen(
-                      receiverUserEmail: data['email'],
-                      receiverUserID: data['userID'],
-                      receiverFullName: data['firstName'] + " " + data['lastName'],)));
+                        receiverUserEmail: data['email'],
+                        receiverUserID: data['userId'],
+                        receiverFullName:
+                            data['firstName'] + " " + data['lastName'],
+                      )));
         },
       );
     } else {

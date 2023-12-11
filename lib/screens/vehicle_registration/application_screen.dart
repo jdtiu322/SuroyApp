@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/reusable_widgets/user_image.dart';
-import 'package:suroyapp/screens/address_screen.dart';
+import 'package:suroyapp/screens/vehicle_registration/address_screen.dart';
 import 'package:suroyapp/models/vehicle_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

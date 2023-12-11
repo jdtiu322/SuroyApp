@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:suroyapp/screens/pricing_screen.dart';
+import 'package:suroyapp/screens/vehicle_registration/pricing_screen.dart';
 import 'package:suroyapp/models/vehicle_info.dart';
 
 class DescriptionRegistration extends StatefulWidget {

@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:suroyapp/screens/application_screen.dart';
+import 'package:suroyapp/screens/signin_screen.dart';
+import 'package:suroyapp/screens/vehicle_registration/application_screen.dart';
 import 'package:suroyapp/screens/complaints.dart';
 import 'package:suroyapp/screens/home_screen.dart';
-import 'package:suroyapp/screens/listings_screen.dart';
+import 'package:suroyapp/screens/vehicle_listing/listings_screen.dart';
 import 'package:suroyapp/screens/notification_screen.dart';
-import 'package:suroyapp/screens/profile_details.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -98,7 +98,6 @@ Align(
   alignment: Alignment.centerRight,
   child: GestureDetector(
     onTap: () {
-      // Show a confirmation dialog
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -108,7 +107,7 @@ Align(
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop();
                 },
                 child: Text('Cancel'),
               ),
@@ -116,9 +115,8 @@ Align(
                 onPressed: () async {
                   // Perform the logout action
                   await FirebaseAuth.instance.signOut();
-                  Navigator.of(context).pop(); // Close the dialog
-                  // Navigate to the login screen or another appropriate screen
-                  Navigator.pushReplacementNamed(context, '/login');
+                  Navigator.of(context).pop(); 
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignInScreen()));
                 },
                 child: Text('Log Out'),
               ),

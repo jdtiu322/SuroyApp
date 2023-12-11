@@ -1,16 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:suroyapp/models/message.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
-import 'package:suroyapp/screens/chat_screen.dart';
-import 'package:suroyapp/screens/message_details.dart';
 import 'package:suroyapp/screens/payment_screen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:suroyapp/models/vehicle_info.dart';
 
 class PostingDetails extends StatefulWidget {
@@ -398,6 +393,7 @@ class _PostingDetailsState extends State<PostingDetails> {
                       pickUpAddress: widget.vehicleAddress,
                       vehicleType: widget.vehicleType,
                       vehicleModel: widget.vehicleModel,
+                      hostId: widget.hostId,
                       hostName: widget.hostName,
                       numSeats: widget.numOfSeats,
                       modelYear: widget.modelYear,

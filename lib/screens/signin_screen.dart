@@ -59,7 +59,7 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Column(
               children: <Widget>[
                 const SizedBox(height: 130),
-                logoWidget("assets/images/logo1.png"),
+                Image.asset('assets/images/suroy-logo.png', width: 200,),
                 const SizedBox(height: 30),
                 Align(
                   alignment: const Alignment(0, -0.1),
@@ -208,8 +208,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
         await FirebaseFirestore.instance
             .collection('userLocation')
-            .add({'email': email,
-            'location': newLocation});
+            .add({'email': email, 'location': newLocation});
       }
     } catch (e) {
       print('Error getting or updating location: $e');
@@ -232,9 +231,5 @@ class _SignInScreenState extends State<SignInScreen> {
 }
 
 Widget logoWidget(String imagePath) {
-  return Image.asset(
-    imagePath,
-    width: 150,
-    height: 150,
-  );
+  return Image.asset(imagePath, width: 300, height: 300);
 }

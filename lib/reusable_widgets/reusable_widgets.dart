@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:geocoder2/geocoder2.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:suroyapp/screens/bookings_screen.dart';
-import 'package:suroyapp/screens/listings_screen.dart';
+import 'package:suroyapp/screens/vehicle_booking/bookings_screen.dart';
+import 'package:suroyapp/screens/vehicle_listing/listings_screen.dart';
 
 Image logoWidget(String imageName) {
   return Image.asset(imageName, fit: BoxFit.fitWidth, width: 600);
@@ -180,7 +180,7 @@ ElevatedButton cancellationButton(BuildContext context) {
             String copyRenterId = chuCutie.id;
 
             await bookings.doc(copyRenterId).delete();
-            Navigator.push(context, MaterialPageRoute(builder: (context) => BookingsScreen()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BookingsScreen()));
 
           }
         } catch (error) {

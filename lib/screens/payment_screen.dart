@@ -2,14 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_webservice/directions.dart';
 import 'package:intl/intl.dart';
 import 'package:pay/pay.dart';
 import 'package:suroyapp/payment_configurations.dart';
-import 'package:suroyapp/screens/bookings_screen.dart';
+import 'package:suroyapp/screens/vehicle_booking/bookings_screen.dart';
 import 'package:suroyapp/models/vehicle_info.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class PaymentPage extends StatefulWidget {
   final VehicleInformationWithDate vehicleInfo;
@@ -21,7 +22,6 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  
   late bool _isLoading;
   String startMonth = "";
   String endMonth = "";
@@ -37,12 +37,64 @@ class _PaymentPageState extends State<PaymentPage> {
   int daysCount = 0;
   double initialBasePrice = 0.0;
   double finalBasePrice = 0.0;
+  late FirebaseMessaging _firebaseMessaging;
 
   @override
   void initState() {
     _isLoading = true;
+    _firebaseMessaging = FirebaseMessaging.instance;
     super.initState();
     initialize();
+  }
+
+Future<void> sendNotificationToHost(String hostId, String notificationTitle, String notificationBody) async {
+  // Get FCM token for the specified host
+  String hostFCMToken = await getHostFCMToken(hostId);
+
+  // FCM server endpoint
+  final String fcmEndpoint = 'https://fcm.googleapis.com/fcm/send';
+
+  // Server Key from Firebase Consolef
+  final String serverKey = 'AAAA4u2dvu0:APA91bF0x0w8ZKxuR4u_F_6551zSebkhCMbhnrzYSWWIYg8BfvpIX4bRnzKNHFNUv3nKKWIc6QNEPsBezTo0N_7YPl6B2QM7URnZC2slEnoHkKXU0CswYYFD3ht_U_v9S7_Tg9H6YnV6';
+
+  // Create the notification payload
+  Map<String, dynamic> notification = {
+    'to': hostFCMToken,
+    'notification': {
+      'title': notificationTitle,
+      'body': notificationBody,
+    },
+    'data': {
+      // Optional data payload
+      'key1': 'value1',
+      'key2': 'value2',
+    },
+  };
+
+  // Encode the payload to JSON
+  String jsonPayload = jsonEncode(notification);
+
+  // Send the notification to FCM server
+final response = await http.post(
+  Uri.parse(fcmEndpoint),
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'key=$serverKey',
+  },
+  body: jsonPayload,
+);
+
+print('FCM Response: ${response.body}');
+
+
+}
+
+  Future<String> getHostFCMToken(String hostId) async {
+
+    DocumentSnapshot hostSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(hostId).get();
+
+    return hostSnapshot['fcmToken'] ?? '';
   }
 
   Future<void> initialize() async {
@@ -89,6 +141,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   'vehicleModel': widget.vehicleInfo.vehicleModel,
                   'plateNumber': widget.vehicleInfo.plateNumber,
                   'imageUrl': widget.vehicleInfo.vehicleImageUrl,
+                  'hostId': widget.vehicleInfo.hostId,
                   'hostName': widget.vehicleInfo.hostName,
                   'modelYear': widget.vehicleInfo.modelYear,
                   'hostAge': widget.vehicleInfo.hostAge,
@@ -98,26 +151,26 @@ class _PaymentPageState extends State<PaymentPage> {
                   'isPickedUp': false,
                 });
 
+                CollectionReference vehicleListings =
+                    FirebaseFirestore.instance.collection('vehicleListings');
 
-                    CollectionReference vehicleListings =
-                        FirebaseFirestore.instance.collection('vehicleListings');
+                QuerySnapshot baliknapls = await vehicleListings
+                    .where('licensePlateNum',
+                        isEqualTo: widget.vehicleInfo.plateNumber)
+                    .get();
+                DocumentSnapshot huhuplsna = baliknapls.docs.first;
 
-                    QuerySnapshot baliknapls = await vehicleListings
-                        .where('licensePlateNum',
-                            isEqualTo: widget.vehicleInfo.plateNumber)
-                        .get();
-                    DocumentSnapshot huhuplsna = baliknapls.docs.first;
+                String vehicleListingDocsID = huhuplsna.id;
 
-                    String vehicleListingDocsID = huhuplsna.id;
+                await vehicleListings.doc(vehicleListingDocsID).update({
+                  'isAvailable': false,
+                });
 
-                    await vehicleListings.doc(vehicleListingDocsID).update({
-                      'isAvailable': false,
-                    });
-
-                    await vehicleListings.doc(vehicleListingDocsID).update({
-                      'bookingStatus': "Booked",
-                    });
-
+                await vehicleListings.doc(vehicleListingDocsID).update({
+                  'bookingStatus': "Booked",
+                });
+                await sendNotificationToHost(widget.vehicleInfo.hostId, "Vehicle has been booked!",
+                 "One of your vehicle listings has been booked");
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => BookingsScreen()));
               }
@@ -133,7 +186,6 @@ class _PaymentPageState extends State<PaymentPage> {
       );
     });
   }
-
 
   @override
   Widget build(BuildContext context) {

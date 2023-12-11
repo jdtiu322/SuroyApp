@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:suroyapp/models/vehicle_info.dart';
-import 'package:suroyapp/screens/listing_details.dart';
+import 'package:suroyapp/screens/vehicle_listing/listing_details.dart';
 
 class Listings extends StatefulWidget {
   const Listings({super.key});

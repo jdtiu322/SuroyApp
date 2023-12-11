@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:suroyapp/screens/posting_details.dart';
+import 'package:suroyapp/screens/vehicle_listing/posting_details.dart';
 
 class WishlistScreen extends StatefulWidget {
   const WishlistScreen({super.key});

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:suroyapp/screens/listings_screen.dart';
+import 'package:suroyapp/screens/vehicle_listing/listings_screen.dart';
 
 class ListingRemovalPage extends StatefulWidget {
   const ListingRemovalPage({super.key});
@@ -37,34 +37,6 @@ class _ListingRemovalPageState extends State<ListingRemovalPage> {
             child: Container(
               child: Column(
                 children: [
-                  Container(
-                    height: 80,
-                    color: Colors.grey.shade400,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              "placeholder",
-                              style: GoogleFonts.poppins(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            "placeholder",
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -245,7 +217,7 @@ class _ListingRemovalPageState extends State<ListingRemovalPage> {
 
                                         QuerySnapshot chuGwapo =
                                             await vehicleListings
-                                                .where('hostID',
+                                                .where('hostId',
                                                     isEqualTo: hostID)
                                                 .get();
 
@@ -257,7 +229,7 @@ class _ListingRemovalPageState extends State<ListingRemovalPage> {
                                         await vehicleListings
                                             .doc(copyHostID)
                                             .delete();
-                                        Navigator.push(
+                                        Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => Listings()),

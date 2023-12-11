@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/reusable_widgets/user_image.dart';
 import 'package:suroyapp/models/vehicle_info.dart';
-import 'package:suroyapp/screens/status_screen.dart';
 
 class ComplaintsScreen extends StatefulWidget {
   final RenterStatus complaintDetails;

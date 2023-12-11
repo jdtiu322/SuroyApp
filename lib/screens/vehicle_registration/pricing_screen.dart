@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:suroyapp/screens/listings_screen.dart';
+import 'package:suroyapp/screens/vehicle_listing/listings_screen.dart';
 import 'package:suroyapp/screens/starting_page.dart';
 import 'package:suroyapp/models/vehicle_info.dart';
 import 'package:flutter/services.dart';

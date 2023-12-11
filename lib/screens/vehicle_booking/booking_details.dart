@@ -6,10 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
 import 'package:suroyapp/models/vehicle_info.dart';
-import 'package:suroyapp/screens/cancellation_screen.dart';
+import 'package:suroyapp/screens/vehicle_booking/cancellation_screen.dart';
 import 'package:suroyapp/screens/complaints_screen.dart';
 import 'package:suroyapp/screens/starting_page.dart';
-import 'package:suroyapp/screens/status_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BookingDetailsScreen extends StatefulWidget {
@@ -405,6 +404,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                   await vehicleListings
                       .doc(copyHostID)
                       .update({'bookingStatus': "Available"});
+                      
 
                   _showReviewDialog();
                 },
