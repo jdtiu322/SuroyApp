@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:suroyapp/reusable_widgets/reusable_widgets.dart';
+import 'package:suroyapp/screens/chat_screen.dart';
 import 'package:suroyapp/screens/payment_screen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:suroyapp/models/vehicle_info.dart';
@@ -103,16 +103,181 @@ class _PostingDetailsState extends State<PostingDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          body: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Image.network(
+                  widget.vImageURL,
+                  height: 220,
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+              SizedBox(height: 15),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey.shade300),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.vehicleModel,
+                        style: GoogleFonts.poppins(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.blue),
+                      ),
+                      SizedBox(height: 3),
+                      Text(
+                        "Pick-up at Address",
+                        style: GoogleFonts.poppins(
+                            fontSize: 12, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        widget.modelYear +
+                            " Model - " +
+                            widget.vehicleType +
+                            " - " +
+                            widget.numOfSeats +
+                            " Seater",
+                        style: GoogleFonts.poppins(
+                            fontSize: 12, fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Description",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      widget.description,
+                      textAlign: TextAlign.justify,
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                      ),
+                    ),
+                    Divider()
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Container(
+                  height: 55,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey.shade300),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: SvgPicture.asset(
+                          'assets/vectors/profile-circle.svg',
+                          width: 50,
+                          height: 50,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "HOSTED BY",
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            widget.hostName,
+                            textAlign: TextAlign.justify,
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 120),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChatScreen(
+                                      receiverUserEmail: widget.email,
+                                      receiverUserID: widget.hostId,
+                                      receiverFullName: widget.hostName)));
+                        },
+                        child: SvgPicture.asset(
+                            'assets/vectors/message-square.svg'),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  "PICK UP YOUR VEHICLE HERE",
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              SizedBox(
+                height: 200,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Container(
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.3),
@@ -122,181 +287,28 @@ class _PostingDetailsState extends State<PostingDetails> {
                         ),
                       ],
                     ),
-                    child: Image.network(
-                      widget.vImageURL,
-                      height: 220,
-                      width: MediaQuery.of(context).size.width,
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: Colors.grey.shade300),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: GoogleMap(
+                        mapType: MapType.normal,
+                        scrollGesturesEnabled: false,
+                        zoomControlsEnabled: false,
+                        onMapCreated: (controller) {
+                          setState(() {
+                            mapController = controller;
+                            _updateMapLocation(); // Trigger map update
+                          });
+                        },
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(0.0, 0.0), // Default location
+                          zoom: 15,
                         ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.vehicleModel,
-                            style: GoogleFonts.poppins(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.blue
-                            ),
-                          ),
-                          SizedBox(height: 3),
-                          Text(
-                            "Pick-up at Address",
-                            style: GoogleFonts.poppins(
-                                fontSize: 12, fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            widget.modelYear +
-                                " Model - " +
-                                widget.vehicleType +
-                                " - " +
-                                widget.numOfSeats +
-                                " Seater",
-                            style: GoogleFonts.poppins(
-                                fontSize: 12, fontWeight: FontWeight.w400),
-                          ),
-                        ],
+                        markers: Set.from(_markers),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Description",
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          widget.description,
-                          textAlign: TextAlign.justify,
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                          ),
-                        ),
-                        Divider()
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    child: Container(
-                      height: 55,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: Colors.grey.shade300),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: SvgPicture.asset(
-                              'assets/vectors/profile-circle.svg',
-                              width: 50,
-                              height: 50,
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "HOSTED BY",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                widget.hostName,
-                                textAlign: TextAlign.justify,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 120),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      "PICK UP YOUR VEHICLE HERE",
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  SizedBox(
-                    height: 200,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: Offset(0, 3),
+                ),
               ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: GoogleMap(
-              mapType: MapType.normal,
-              scrollGesturesEnabled: false,
-              zoomControlsEnabled: false,
-              onMapCreated: (controller) {
-                setState(() {
-                  mapController = controller;
-                  _updateMapLocation(); // Trigger map update
-                });
-              },
-              initialCameraPosition: CameraPosition(
-                target: LatLng(0.0, 0.0), // Default location
-                zoom: 15,
-              ),
-              markers: Set.from(_markers),
-            ),
-          ),
-        ),
-      ),
-    ),
               SizedBox(
                 height: 30,
               ),
@@ -305,6 +317,7 @@ class _PostingDetailsState extends State<PostingDetails> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        height: 100,
         child: Container(
           height: 80,
           child: Padding(

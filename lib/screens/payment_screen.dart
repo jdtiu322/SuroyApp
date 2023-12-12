@@ -47,50 +47,49 @@ class _PaymentPageState extends State<PaymentPage> {
     initialize();
   }
 
-Future<void> sendNotificationToHost(String hostId, String notificationTitle, String notificationBody) async {
-  // Get FCM token for the specified host
-  String hostFCMToken = await getHostFCMToken(hostId);
+  Future<void> sendNotificationToHost(
+      String hostId, String notificationTitle, String notificationBody) async {
+    // Get FCM token for the specified host
+    String hostFCMToken = await getHostFCMToken(hostId);
 
-  // FCM server endpoint
-  final String fcmEndpoint = 'https://fcm.googleapis.com/fcm/send';
+    // FCM server endpoint
+    final String fcmEndpoint = 'https://fcm.googleapis.com/fcm/send';
 
-  // Server Key from Firebase Consolef
-  final String serverKey = 'AAAA4u2dvu0:APA91bF0x0w8ZKxuR4u_F_6551zSebkhCMbhnrzYSWWIYg8BfvpIX4bRnzKNHFNUv3nKKWIc6QNEPsBezTo0N_7YPl6B2QM7URnZC2slEnoHkKXU0CswYYFD3ht_U_v9S7_Tg9H6YnV6';
+    // Server Key from Firebase Consolef
+    final String serverKey =
+        'AAAA4u2dvu0:APA91bF0x0w8ZKxuR4u_F_6551zSebkhCMbhnrzYSWWIYg8BfvpIX4bRnzKNHFNUv3nKKWIc6QNEPsBezTo0N_7YPl6B2QM7URnZC2slEnoHkKXU0CswYYFD3ht_U_v9S7_Tg9H6YnV6';
 
-  // Create the notification payload
-  Map<String, dynamic> notification = {
-    'to': hostFCMToken,
-    'notification': {
-      'title': notificationTitle,
-      'body': notificationBody,
-    },
-    'data': {
-      // Optional data payload
-      'key1': 'value1',
-      'key2': 'value2',
-    },
-  };
+    // Create the notification payload
+    Map<String, dynamic> notification = {
+      'to': hostFCMToken,
+      'notification': {
+        'title': notificationTitle,
+        'body': notificationBody,
+      },
+      'data': {
+        // Optional data payload
+        'key1': 'value1',
+        'key2': 'value2',
+      },
+    };
 
-  // Encode the payload to JSON
-  String jsonPayload = jsonEncode(notification);
+    // Encode the payload to JSON
+    String jsonPayload = jsonEncode(notification);
 
-  // Send the notification to FCM server
-final response = await http.post(
-  Uri.parse(fcmEndpoint),
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'key=$serverKey',
-  },
-  body: jsonPayload,
-);
+    // Send the notification to FCM server
+    final response = await http.post(
+      Uri.parse(fcmEndpoint),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'key=$serverKey',
+      },
+      body: jsonPayload,
+    );
 
-print('FCM Response: ${response.body}');
-
-
-}
+    print('FCM Response: ${response.body}');
+  }
 
   Future<String> getHostFCMToken(String hostId) async {
-
     DocumentSnapshot hostSnapshot =
         await FirebaseFirestore.instance.collection('users').doc(hostId).get();
 
@@ -169,8 +168,6 @@ print('FCM Response: ${response.body}');
                 await vehicleListings.doc(vehicleListingDocsID).update({
                   'bookingStatus': "Booked",
                 });
-                await sendNotificationToHost(widget.vehicleInfo.hostId, "Vehicle has been booked!",
-                 "One of your vehicle listings has been booked");
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => BookingsScreen()));
               }
@@ -271,7 +268,7 @@ print('FCM Response: ${response.body}');
                             Text(
                                 "$startMonth ${widget.vehicleInfo.startDate.day} - $endMonth ${widget.vehicleInfo.endDate.day}"),
                             const SizedBox(
-                              width: 180,
+                              width: 100,
                             ),
                             Text(
                               "Change Date",

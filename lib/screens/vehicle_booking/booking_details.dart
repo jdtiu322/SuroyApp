@@ -324,7 +324,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                 ],
               ),
               SizedBox(
-                width: 80,
+                width: 50,
               ),
               GestureDetector(
                   onTap: () {

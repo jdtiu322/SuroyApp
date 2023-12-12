@@ -260,7 +260,7 @@ class _ComplaintsScreenState extends State<ComplaintsScreen> {
                             'complaintCategory': complaintCategory,
                             'description': description.text,
                             'vehicleModel': widget.complaintDetails.vehicleModel,
-                            'plateNumber': widget.complaintDetails.vehicleModel,
+                            'plateNumber': widget.complaintDetails.plateNumber,
                                  // Use description.text instead of description
                             'imageUrl': imageUrl,
                             'complaintStatus': "Filed"
@@ -278,14 +278,8 @@ class _ComplaintsScreenState extends State<ComplaintsScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                content: Column(
+                                content: const Column(
                                   children: [
-                                    Image.asset(
-                                      'assets/images/success_image.png',
-                                      width: 100,
-                                      height: 100,
-                                      fit: BoxFit.contain,
-                                    ),
                                     SizedBox(height: 5), // Adjusted height
                                     Text(
                                       'Your complaint has been submitted successfully.',

@@ -31,8 +31,7 @@ class _ListingsState extends State<Listings> {
     _userStream = FirebaseFirestore.instance
         .collection("vehicleListings")
         .where('hostId', isEqualTo: userID,)
-        .where('isAvailable', isEqualTo: true)
-        .snapshots();
+       .snapshots();
   }
 
   Future<void> initializeData() async {}
@@ -41,9 +40,7 @@ class _ListingsState extends State<Listings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Listings"),
-      ),
-      body: StreamBuilder(
+        title: Text("My Listings"),      body: StreamBuilder(
         stream: _userStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {

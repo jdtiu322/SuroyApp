@@ -3,6 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:suroyapp/models/vehicle_info.dart';
+import 'package:suroyapp/screens/vehicle_booking/booking_details.dart';
+import 'package:suroyapp/screens/vehicle_listing/listing_details.dart';
 
 import 'package:suroyapp/screens/vehicle_listing/posting_details.dart';
 
@@ -114,6 +117,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 return GestureDetector(
                   onTap: () async {
+                    if (docs[index]['hostId'] == user!.uid) {
+                      FinalVehicleInfo listingInfo = FinalVehicleInfo(
+                        isAvailable: docs[index]['isAvailable'],
+                        rentPrice: docs[index]['pricing'],
+                        bookingStatus: docs[index]['bookingStatus'],
+                        vehicleDescription: docs[index]['description'],
+                        pickUpAddress: docs[index]['renterAddress'],
+                        vehicleType: docs[index]['vehicleType'],
+                        vehicleModel: docs[index]['vehicleModel'],
+                        hostName: docs[index]['hostName'],
+                        numSeats: docs[index]['numSeats'],
+                        modelYear: docs[index]['modelYear'],
+                        plateNumber: docs[index]['licensePlateNum'],
+                        vehicleImageUrl: docs[index]['vehicleImage'],
+                        certificateImageUrl: "",
+                        hostAge: docs[index]['hostAge'],
+                        hostMobileNumber: docs[index]['hostMobileNumber'],
+                        email: docs[index]['email'],
+                      );
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ListingDetails(listingInfo: listingInfo)));
+                    }else
                     Navigator.push(
                       context,
                       MaterialPageRoute(

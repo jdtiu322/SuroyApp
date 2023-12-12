@@ -75,7 +75,7 @@ class _ComplaintsState extends State<Complaints> {
                               ),
                             ],
                           ),
-                          height: 150,
+                          height: 180,
                           width: MediaQuery.of(context).size.width,
                           child: Column(
                             children: [
